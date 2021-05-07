@@ -1,3 +1,5 @@
+import client_serveur as serv
+
 joueur1=([[0 for x in range(10)]for x in range(10)])
 joueur2=([[0 for x in range(10)]for x in range(10)])
 joueur1Tir=([[0 for x in range(10)]for x in range(10)])
@@ -12,6 +14,18 @@ def initialisation (joueur):
     for cle,valeur in bateaux2.items():
         bateau1 = list(input("Entrez la première extrémité du {} ({} cases)".format(cle, valeur)))
         bateau2 = list(input("Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur)))
+        if bateau1[0]==bateau2[0]:
+            for i in range(int(bateau1[1])-1,int(bateau2[1])):
+                joueur[ord(bateau1[0])-65][i]=cle
+        else:
+            for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
+                joueur[i][int(bateau1[1])-1]=cle
+                
+def initialisation_client (joueur):
+    
+    for cle,valeur in bateaux2.items():
+        bateau1 = list(serv.input_serveur("Entrez la première extrémité du {} ({} cases)".format(cle, valeur)))
+        bateau2 = list(serv.input_serveur("Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur)))
         if bateau1[0]==bateau2[0]:
             for i in range(int(bateau1[1])-1,int(bateau2[1])):
                 joueur[ord(bateau1[0])-65][i]=cle
@@ -58,22 +72,50 @@ def perdu():
 #bataille(joueur1, 'A1')
 #bataille(joueur1, 'B2')
 #bataille(joueur1, 'C3')
-        
-initialisation(joueur1)
-initialisation(joueur2)
 
-while perdu()==False:
-    navale=""
-    print(perdu())
-    while navale!=None and perdu()==False:
-        case = list(input("Joueur 1, entrez une case"))
-        navale=bataille(joueur2, bateaux2, case)
-        print(navale)
-        print( bateaux2['porte-avion'])
-        tir(joueur1Tir, case, navale)
+mode=int(input("1. mode 1 ordinateur \n 2. mode réseau (serveur) \n 3. mode réseau (client)"))
+
+if mode==1:
+    initialisation(joueur1)
+    initialisation(joueur2)
+
+    while perdu()==False:
+        navale=""
+        print(perdu())
+        while navale!=None and perdu()==False:
+            case = list(input("Joueur 1, entrez une case"))
+            navale=bataille(joueur2, bateaux2, case)
+            print(navale)
+            print( bateaux2['porte-avion'])
+            tir(joueur1Tir, case, navale)
         
-    navale=""
-    while navale!=None and perdu()==False:
-        case = list(input("Joueur 2, entrez une case"))
-        navale=bataille(joueur1, bateaux1, case)
-        tir(joueur2Tir, case, navale)
+        navale=""
+        while navale!=None and perdu()==False:
+            case = list(input("Joueur 2, entrez une case"))
+            navale=bataille(joueur1, bateaux1, case)
+            tir(joueur2Tir, case, navale)
+            
+elif mode==2:
+    initialisation(joueur1)
+    initialisation_client(joueur2)
+
+    while perdu()==False:
+        serveur(joueur2, joueur2Tir)
+        navale=""
+        print(perdu())
+        while navale!=None and perdu()==False:
+            case = list(input("Joueur 1, entrez une case"))
+            navale=bataille(joueur2, bateaux2, case)
+            print(navale)
+            print( bateaux2['porte-avion'])
+            tir(joueur1Tir, case, navale)
+            
+        serveur(joueur2, joueur2Tir)
+        navale=""
+        while navale!=None and perdu()==False:
+            case = list(serv.input_serveur("Joueur 2, entrez une case"))
+            navale=bataille(joueur1, bateaux1, case)
+            tir(joueur2Tir, case, navale)
+    
+elif mode==3:
+    serv.input_client()
