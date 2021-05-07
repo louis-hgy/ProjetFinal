@@ -72,6 +72,50 @@ def perdu():
 #bataille(joueur1, 'A1')
 #bataille(joueur1, 'B2')
 #bataille(joueur1, 'C3')
+import threading
+import time
+
+
+class Thread (threading.Thread):
+    def __init__(self):      # jusqua = donnée supplémentaire
+        threading.Thread.__init__(self)  # ne pas oublier cette ligne
+        # (appel au constructeur de la classe mère)          # donnée supplémentaire ajoutée à la classe
+
+    def run(self):
+        while True:
+            serv.client()
+            time.sleep(0.08)
+            
+            
+class Thread2 (threading.Thread):
+    def __init__(self):      # jusqua = donnée supplémentaire
+        threading.Thread.__init__(self)  # ne pas oublier cette ligne
+        # (appel au constructeur de la classe mère)          # donnée supplémentaire ajoutée à la classe
+
+    def run(self):
+        while True:
+            serv.input_client()
+            time.sleep(0.08)
+            
+class Thread3 (threading.Thread):
+    def __init__(self):      # jusqua = donnée supplémentaire
+        threading.Thread.__init__(self)  # ne pas oublier cette ligne
+        # (appel au constructeur de la classe mère)          # donnée supplémentaire ajoutée à la classe
+
+    def run(self):
+        while True:
+            serv.serveur(joueur2, joueur2Tir)
+            time.sleep(0.08)
+
+
+
+c = Thread()
+i= Thread2()
+s=Thread3()# crée le thread
+       
+    
+    
+    
 
 mode=int(input("1. mode 1 ordinateur \n 2. mode réseau (serveur) \n 3. mode réseau (client)"))
 
@@ -96,11 +140,12 @@ if mode==1:
             tir(joueur2Tir, case, navale)
             
 elif mode==2:
+    s.start()
     initialisation(joueur1)
     initialisation_client(joueur2)
 
     while perdu()==False:
-        serveur(joueur2, joueur2Tir)
+        #serv.serveur(joueur2, joueur2Tir)
         navale=""
         print(perdu())
         while navale!=None and perdu()==False:
@@ -110,12 +155,17 @@ elif mode==2:
             print( bateaux2['porte-avion'])
             tir(joueur1Tir, case, navale)
             
-        serveur(joueur2, joueur2Tir)
+        #serv.serveur(joueur2, joueur2Tir)
         navale=""
         while navale!=None and perdu()==False:
             case = list(serv.input_serveur("Joueur 2, entrez une case"))
             navale=bataille(joueur1, bateaux1, case)
             tir(joueur2Tir, case, navale)
-    
+
 elif mode==3:
-    serv.input_client()
+    #while perdu()==False:
+        #serv.client()
+        
+    i.start()
+        
+    c.start() 
