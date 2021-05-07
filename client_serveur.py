@@ -10,12 +10,12 @@ host, port =('localhost',5566)
 def serveur(joueur, joueurTir):
     serv=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     serv.bind((host, 5560))
-    print('serveur démarré')
+    #print('serveur démarré')
 
     while True:
         serv.listen(5)
         conn, adress = serv.accept()
-        print('client connecté')
+        #print('client connecté')
     
         joueur = str(joueur)
         joueur = joueur.encode("utf-8")
@@ -30,28 +30,28 @@ def serveur(joueur, joueurTir):
         
     
 def input_serveur(message):
-    sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
-    sockt.bind((host, port))
-    print('serveur démarré')
+    sock.bind((host, port))
+    #print('serveur démarré')
 
-    sockt.listen(5)
-    conn, adress = sockt.accept()
-    print('client connecté')
+    sock.listen(5)
+    conn, adress = sock.accept()
+    #print('client connecté')
     
     message = message.encode("utf-8")
     conn.sendall(message)
     
     input=''
     while input=='':
-        input = conn.recv(2048)
+        input = conn.recv(1024)
         input = input.decode("utf-8")
-        print(input)
-        print("test")
+        #print(input)
+        #print("test")
         
 
     conn.close()
-    sockt.close()
+    sock.close()
        
     return input
     
@@ -65,12 +65,12 @@ def client():
         joueur = serv.recv(1024)
         joueur = joueur.decode("utf-8")
         joueur = eval(joueur)
-        print(joueur)
+        #print(joueur)
         
         joueurTir = serv.recv(1024)
         joueurTir = joueurTir.decode("utf-8")
         joueur = eval(joueur)
-        print(joueurTir)
+        #print(joueurTir)
         
     serv.close()
     return Joueur, joueurTir
@@ -79,16 +79,19 @@ def input_client():
     sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         sockt.connect((host, port))
-        print("Client conn")
+        #print("Client conn")
     
     except ConnectionRefusedError:
         print('erreur')
         
     inpt=''
     while inpt=='':
-        inpt = sockt.recv(2048)
-        inpt = inpt.decode("utf-8")
-        print(inpt)
+        try:
+            inpt = sockt.recv(1024)
+            inpt = inpt.decode("utf-8")
+            print(inpt)
+        except:
+            None
         
     case=input(inpt)
     

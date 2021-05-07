@@ -1,4 +1,6 @@
 import client_serveur as serv
+import threading
+import time
 
 joueur1=([[0 for x in range(10)]for x in range(10)])
 joueur2=([[0 for x in range(10)]for x in range(10)])
@@ -24,8 +26,11 @@ def initialisation (joueur):
 def initialisation_client (joueur):
     
     for cle,valeur in bateaux2.items():
-        bateau1 = list(serv.input_serveur("Entrez la première extrémité du {} ({} cases)".format(cle, valeur)))
-        bateau2 = list(serv.input_serveur("Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur)))
+        bateau1, bateau2 = [], []
+        while bateau1==[]:
+            bateau1 = list(serv.input_serveur("Entrez la première extrémité du {} ({} cases)".format(cle, valeur)))
+        while bateau2==[]:
+            bateau2 = list(serv.input_serveur("Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur)))
         if bateau1[0]==bateau2[0]:
             for i in range(int(bateau1[1])-1,int(bateau2[1])):
                 joueur[ord(bateau1[0])-65][i]=cle
@@ -72,8 +77,7 @@ def perdu():
 #bataille(joueur1, 'A1')
 #bataille(joueur1, 'B2')
 #bataille(joueur1, 'C3')
-import threading
-import time
+
 
 
 class Thread (threading.Thread):
@@ -83,8 +87,8 @@ class Thread (threading.Thread):
 
     def run(self):
         while True:
-            serv.client()
-            time.sleep(0.08)
+            serv.input_serveur('')
+            #time.sleep(0.08)
             
             
 class Thread2 (threading.Thread):
@@ -95,23 +99,12 @@ class Thread2 (threading.Thread):
     def run(self):
         while True:
             serv.input_client()
-            time.sleep(0.08)
+            #time.sleep(0.08)
             
-class Thread3 (threading.Thread):
-    def __init__(self):      # jusqua = donnée supplémentaire
-        threading.Thread.__init__(self)  # ne pas oublier cette ligne
-        # (appel au constructeur de la classe mère)          # donnée supplémentaire ajoutée à la classe
+            
 
-    def run(self):
-        while True:
-            serv.serveur(joueur2, joueur2Tir)
-            time.sleep(0.08)
-
-
-
-c = Thread()
+s = Thread()
 i= Thread2()
-s=Thread3()# crée le thread
        
     
     
@@ -140,7 +133,7 @@ if mode==1:
             tir(joueur2Tir, case, navale)
             
 elif mode==2:
-    s.start()
+    #s.start()
     initialisation(joueur1)
     initialisation_client(joueur2)
 
@@ -163,9 +156,11 @@ elif mode==2:
             tir(joueur2Tir, case, navale)
 
 elif mode==3:
-    #while perdu()==False:
+    while perdu()==False:
         #serv.client()
+    
         
-    i.start()
+        i.start()
+
         
-    c.start() 
+    #c.start() 
