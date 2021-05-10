@@ -87,7 +87,7 @@ class Thread (threading.Thread):
 
     def run(self):
         while True:
-            serv.input_serveur('')
+            serv.input_serveur(None)
             #time.sleep(0.08)
             
             
@@ -144,23 +144,25 @@ elif mode==2:
         while navale!=None and perdu()==False:
             case = list(input("Joueur 1, entrez une case"))
             navale=bataille(joueur2, bateaux2, case)
-            print(navale)
-            print( bateaux2['porte-avion'])
+            #print(navale)
+            #print( bateaux2['porte-avion'])
             tir(joueur1Tir, case, navale)
             
         #serv.serveur(joueur2, joueur2Tir)
         navale=""
         while navale!=None and perdu()==False:
-            case = list(serv.input_serveur("Joueur 2, entrez une case"))
-            navale=bataille(joueur1, bateaux1, case)
-            tir(joueur2Tir, case, navale)
+            case2=[]
+            while case2==[]:
+                case2 = list(serv.input_serveur("Joueur 2, entrez une case"))
+        
+            navale=bataille(joueur1, bateaux1, case2)
+            tir(joueur2Tir, case2, navale)
 
 elif mode==3:
-    while perdu()==False:
+    #while perdu()==False:
         #serv.client()
     
-        
-        i.start()
+    i.start()
 
         
     #c.start() 

@@ -27,21 +27,29 @@ def serveur(joueur, joueurTir):
         
     conn.close()
     serv.close()
-        
-    
+ 
+
 def input_serveur(message):
-    sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
-    sock.bind((host, port))
+    sock=()
+    if sock==():
+        sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
+
+        sock.bind((host, port))
     #print('serveur démarré')
+
+
+
 
     sock.listen(5)
     conn, adress = sock.accept()
     #print('client connecté')
-    
-    message = message.encode("utf-8")
-    conn.sendall(message)
-    
+    try:
+        message = message.encode("utf-8")
+        conn.sendall(message)
+    except:
+        print("err")
+        
     input=''
     while input=='':
         input = conn.recv(1024)
@@ -77,21 +85,24 @@ def client():
 
 def input_client():
     sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        sockt.connect((host, port))
+    connection=False
+    while connection==False:
+        try:
+            sockt.connect((host, port))
         #print("Client conn")
     
-    except ConnectionRefusedError:
-        print('erreur')
+        except ConnectionRefusedError:
+            print('erreur1')
+        connection=True
         
     inpt=''
     while inpt=='':
         try:
             inpt = sockt.recv(1024)
             inpt = inpt.decode("utf-8")
-            print(inpt)
+            #print(inpt)
         except:
-            None
+            print("error")
         
     case=input(inpt)
     
@@ -100,7 +111,7 @@ def input_client():
         sockt.sendall(case)
     
     except ConnectionRefusedError:
-        print('erreur')
+        print('erreur2')
     sockt.close()
 
     
