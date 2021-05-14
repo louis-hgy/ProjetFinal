@@ -1,7 +1,7 @@
 #coding:utf-8
-import socket, threading
+import socket, threading, time
 
-host, port =('localhost',5576)
+host, port =('localhost',5566)
 #sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 class serveur(threading.Thread):
@@ -37,7 +37,7 @@ class serveur(threading.Thread):
     
     def serv_send(joueur, joueurTir):
         serv=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        serv.bind((host, 5566))
+        serv.bind((host, 5576))
         #print('serveur démarré')
 
         while True:
@@ -94,6 +94,37 @@ class serveur(threading.Thread):
         #sockt.close()
        
         return input
+
+class serveurOut(threading.Thread):
+
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sockt.bind((host, 5576))
+        self.sockt.listen(5)
+        print('listen')
+        try:
+            self.conn, self.adress = self.sockt.accept()
+            print('client connecté')
+        except:
+            print('erreur connexion')
+        print('ffggtrrthyhyt')
+
+    def serv_send(self, joueur, joueurTir):
+            print(joueur)
+            joueur = str(joueur)
+            joueur = joueur.encode("utf-8")
+            self.conn.sendall(joueur)
+            time.sleep(0.08)
+    
+            joueurTir = str(joueurTir)
+            joueurTir = joueurTir.encode("utf-8")
+            self.conn.sendall(joueurTir)
+    
+        #conn.close()
+        #serv.close()
+
+
 
 
 
@@ -169,6 +200,57 @@ class client(threading.Thread):
         except ConnectionRefusedError:
             print('erreur send')
         #self.sockt.close()
+
+
+
+
+class clientIn(threading.Thread):
+        
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    
+            #connection=False
+            #while connection==False:
+        try:
+            self.sockt.connect((host, 5576))
+            print("Client conn 5576")
+                #    connection=True
+        
+        except ConnectionRefusedError:
+            print('erreur conn')
+                #    connection=False
+        
+                
+    def client_send(self):
+        #while True:
+        joueur = self.sockt.recv(1024)
+        joueur = joueur.decode("utf-8")
+        joueur = eval(joueur)
+        print(joueur)
+            
+        joueurTir = self.sockt.recv(1024)
+        joueurTir = joueurTir.decode("utf-8")
+        joueurTir = eval(joueurTir)
+        print(joueurTir)
+            
+        #serv.close()
+        return joueur, joueurTir
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -90,22 +90,23 @@ class Thread (threading.Thread):
             serv.serveur.input_serveur(self, '')
             #time.sleep(0.08)
             
-            
+"""            
 class Thread2 (threading.Thread):
     def __init__(self):      # jusqua = donnée supplémentaire
         threading.Thread.__init__(self)  # ne pas oublier cette ligne
         # (appel au constructeur de la classe mère)          # donnée supplémentaire ajoutée à la classe
 
     def run(self):
+        self2=serv.clientIn()
         while True:
-            serv.client.input_client()
+            serv.clientIn.client_send(self2)
             #time.sleep(0.08)
             
             
 
-s = Thread()
-i= Thread2()
-"""       
+#s = Thread()
+
+     
 
     
     
@@ -136,19 +137,23 @@ elif mode==2:
     
     #s.start()
     self=serv.serveur()
+    self2=serv.serveurOut()
     initialisation(joueur1)
     initialisation_client(self, joueur2)
+    
+    serv.serveurOut.serv_send(self2, joueur2, joueur2Tir)
 
     while perdu()==False:
         #serv.serveur(joueur2, joueur2Tir)
         navale=""
         print(perdu())
-        while navale!=None and perdu()==False:
+        while navale!=None and perdu()==False:    
             case = list(input("Joueur 1, entrez une case"))
             navale=bataille(joueur2, bateaux2, case)
             #print(navale)
             #print( bateaux2['porte-avion'])
             tir(joueur1Tir, case, navale)
+            serv.serveurOut.serv_send(self2, joueur2, joueur2Tir)
             
         #serv.serveur(joueur2, joueur2Tir)
         navale=""
@@ -159,15 +164,20 @@ elif mode==2:
         
             navale=bataille(joueur1, bateaux1, case2)
             tir(joueur2Tir, case2, navale)
+            serv.serveurOut.serv_send(self2, joueur2, joueur2Tir)
 
 elif mode==3:
     #while perdu()==False:
         #serv.client()
     self=serv.client()
+    #self2=serv.clientIn()
+    i= Thread2()
+    i.start()
     #serv.client()
     while True:
         serv.client.input_client(self)
-    #i.start()
+        
+   
 
         
     #c.start() 
