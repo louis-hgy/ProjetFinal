@@ -1,11 +1,182 @@
 #coding:utf-8
-import socket
+import socket, threading
 
-host, port =('localhost',5566)
-
-
+host, port =('localhost',5576)
 #sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+class serveur(threading.Thread):
+    
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sockt.bind((host, port))
+        self.sockt.listen(5)
+        print('listen')
+        try:
+            self.conn, self.adress = self.sockt.accept()
+            print('client connecté')
+        except:
+            print('erreur connexion')
+        print('ffggtrrthyhyt')
+        
+    """
+    def run(self):
+        
+        self.sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sockt.bind((host, port))
+        self.sockt.listen(5)
+        print('listen')
+        try:
+            self.conn, self.adress = self.sockt.accept()
+            print('client connecté')
+        except:
+            print('erreur connexion')
+        print('ffggtrrthyhyt')
+        return self
+    """
+    
+    def serv_send(joueur, joueurTir):
+        serv=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        serv.bind((host, 5566))
+        #print('serveur démarré')
+
+        while True:
+            serv.listen(5)
+            conn, adress = serv.accept()
+            #print('client connecté')
+    
+            joueur = str(joueur)
+            joueur = joueur.encode("utf-8")
+            conn.sendall(joueur)
+        
+            joueurTir = str(joueurTir)
+            joueurTir = joueurTir.encode("utf-8")
+            conn.sendall(joueurTir)
+        
+        conn.close()
+        serv.close()
+
+    def input_serveur(self, message):
+    
+        #if sock==[]:
+        #sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
+
+        #sockt.bind((host, port))
+        #print('serveur démarré')
+        """
+        sockt.listen(5)
+        print('listen')
+        try:
+            conn, adress = sockt.accept()
+            print('client connecté')
+        except:
+            print('erreur connexion')
+        print('ffggtrrthyhyt')
+        """
+        try:
+            message = message.encode("utf-8")
+            self.conn.sendall(message)
+            print('send')
+        except:
+            print("erreur envoi")
+        
+        input=''
+        while input=='':
+            input = self.conn.recv(1024)
+            
+        input = input.decode("utf-8")
+        print(input)
+        print("test")
+        
+
+        #conn.close()
+        #sockt.close()
+       
+        return input
+
+
+
+class client(threading.Thread):
+    
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                
+            #connection=False
+            #while connection==False:
+        try:
+            self.sockt.connect((host, port))
+            print("Client conn")
+                #    connection=True
+        
+        except ConnectionRefusedError:
+            print('erreur conn')
+                #    connection=False
+        
+                
+    def client_send():
+        serv=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        serv.connect((host, 5560))
+        while True:
+            joueur = serv.recv(1024)
+            joueur = joueur.decode("utf-8")
+            joueur = eval(joueur)
+            #print(joueur)
+            
+            joueurTir = serv.recv(1024)
+            joueurTir = joueurTir.decode("utf-8")
+            joueur = eval(joueur)
+            #print(joueurTir)
+        
+        serv.close()
+        return Joueur, joueurTir
+
+    def input_client(self):
+        """
+        sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
+        connection=False
+        while connection==False:
+            try:
+                sockt.connect((host, port))
+                print("Client conn")
+                connection=True
+    
+            except ConnectionRefusedError:
+                print('erreur conn')
+                connection=False
+        """
+
+        
+        inpt=''
+        while inpt=='':
+            try:
+                inpt = self.sockt.recv(1024)
+                inpt = inpt.decode("utf-8")
+                print(inpt)
+            except:
+                print("error recv")
+                
+       
+        
+        case=input(inpt)
+    
+        try:
+            case = case.encode("utf-8")
+            self.sockt.sendall(case)
+    
+        except ConnectionRefusedError:
+            print('erreur send')
+        #self.sockt.close()
+
+
+
+"""
+def init():
+    print('ttt')
+    sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sockt.bind((host, port))
 
 def serveur(joueur, joueurTir):
     serv=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -28,21 +199,21 @@ def serveur(joueur, joueurTir):
     conn.close()
     serv.close()
  
-
+#sock=[]
 def input_serveur(message):
-    sock=()
-    if sock==():
-        sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
+    #if sock==[]:
+        #sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
 
-        sock.bind((host, port))
+    #sockt.bind((host, port))
     #print('serveur démarré')
 
 
 
 
-    sock.listen(5)
-    conn, adress = sock.accept()
+    sockt.listen(5)
+    conn, adress = sockt.accept()
     #print('client connecté')
     try:
         message = message.encode("utf-8")
@@ -59,12 +230,12 @@ def input_serveur(message):
         
 
     conn.close()
-    sock.close()
+    sockt.close()
        
     return input
-    
+"""
 
-
+"""
 def client():
     serv=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
@@ -90,10 +261,12 @@ def input_client():
         try:
             sockt.connect((host, port))
         #print("Client conn")
+            connection=True
     
         except ConnectionRefusedError:
             print('erreur1')
-        connection=True
+            connection=False
+        
         
     inpt=''
     while inpt=='':
@@ -114,7 +287,7 @@ def input_client():
         print('erreur2')
     sockt.close()
 
-    
+"""
 
   
 """

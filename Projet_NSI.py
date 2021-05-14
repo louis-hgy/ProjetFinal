@@ -23,14 +23,14 @@ def initialisation (joueur):
             for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
                 joueur[i][int(bateau1[1])-1]=cle
                 
-def initialisation_client (joueur):
+def initialisation_client (self, joueur):
     
     for cle,valeur in bateaux2.items():
         bateau1, bateau2 = [], []
         while bateau1==[]:
-            bateau1 = list(serv.input_serveur("Entrez la première extrémité du {} ({} cases)".format(cle, valeur)))
+            bateau1 = list(serv.serveur.input_serveur(self, "Entrez la première extrémité du {} ({} cases)".format(cle, valeur)))
         while bateau2==[]:
-            bateau2 = list(serv.input_serveur("Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur)))
+            bateau2 = list(serv.serveur.input_serveur(self, "Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur)))
         if bateau1[0]==bateau2[0]:
             for i in range(int(bateau1[1])-1,int(bateau2[1])):
                 joueur[ord(bateau1[0])-65][i]=cle
@@ -79,7 +79,7 @@ def perdu():
 #bataille(joueur1, 'C3')
 
 
-
+"""
 class Thread (threading.Thread):
     def __init__(self):      # jusqua = donnée supplémentaire
         threading.Thread.__init__(self)  # ne pas oublier cette ligne
@@ -87,7 +87,7 @@ class Thread (threading.Thread):
 
     def run(self):
         while True:
-            serv.input_serveur(None)
+            serv.serveur.input_serveur(self, '')
             #time.sleep(0.08)
             
             
@@ -98,15 +98,15 @@ class Thread2 (threading.Thread):
 
     def run(self):
         while True:
-            serv.input_client()
+            serv.client.input_client()
             #time.sleep(0.08)
             
             
 
 s = Thread()
 i= Thread2()
-       
-    
+"""       
+
     
     
 
@@ -133,9 +133,11 @@ if mode==1:
             tir(joueur2Tir, case, navale)
             
 elif mode==2:
+    
     #s.start()
+    self=serv.serveur()
     initialisation(joueur1)
-    initialisation_client(joueur2)
+    initialisation_client(self, joueur2)
 
     while perdu()==False:
         #serv.serveur(joueur2, joueur2Tir)
@@ -153,7 +155,7 @@ elif mode==2:
         while navale!=None and perdu()==False:
             case2=[]
             while case2==[]:
-                case2 = list(serv.input_serveur("Joueur 2, entrez une case"))
+                case2 = list(serv.serveur.input_serveur(self, "Joueur 2, entrez une case"))
         
             navale=bataille(joueur1, bateaux1, case2)
             tir(joueur2Tir, case2, navale)
@@ -161,8 +163,11 @@ elif mode==2:
 elif mode==3:
     #while perdu()==False:
         #serv.client()
-    
-    i.start()
+    self=serv.client()
+    #serv.client()
+    while True:
+        serv.client.input_client(self)
+    #i.start()
 
         
     #c.start() 
