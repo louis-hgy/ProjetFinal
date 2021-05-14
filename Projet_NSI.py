@@ -67,10 +67,10 @@ def bataille(joueur, bateaux, case):
 def perdu():
     if bateaux1['porte-avion']==0:
     #and bateaux1['croiseur']==0 and bateaux1['sous-marin']==0 and bateaux1['contre-torpilleur']==0 and bateaux1['torpilleur']==0:
-        return 'joueur1'
+        return 'Joueur 1'
     elif bateaux2['porte-avion']==0 :
     #and bateaux2['croiseur']==0 and bateaux2['sous-marin']==0 and bateaux2['contre-torpilleur']==0 and bateaux2['torpilleur']==0:
-        return 'joueur2'
+        return 'Joueur 2'
     else:
         return False
         
@@ -78,19 +78,7 @@ def perdu():
 #bataille(joueur1, 'B2')
 #bataille(joueur1, 'C3')
 
-
-"""
-class Thread (threading.Thread):
-    def __init__(self):      # jusqua = donnée supplémentaire
-        threading.Thread.__init__(self)  # ne pas oublier cette ligne
-        # (appel au constructeur de la classe mère)          # donnée supplémentaire ajoutée à la classe
-
-    def run(self):
-        while True:
-            serv.serveur.input_serveur(self, '')
-            #time.sleep(0.08)
-            
-"""            
+    
 class Thread2 (threading.Thread):
     def __init__(self):      # jusqua = donnée supplémentaire
         threading.Thread.__init__(self)  # ne pas oublier cette ligne
@@ -101,6 +89,10 @@ class Thread2 (threading.Thread):
         while True:
             serv.clientIn.client_send(self2)
             #time.sleep(0.08)
+            
+    def stop(self):
+        serv.clientIn.stop(self)
+        self._running = False
             
             
 
@@ -132,6 +124,7 @@ if mode==1:
             case = list(input("Joueur 2, entrez une case"))
             navale=bataille(joueur1, bateaux1, case)
             tir(joueur2Tir, case, navale)
+    print(perdu(), "a perdu !")
             
 elif mode==2:
     
@@ -165,7 +158,10 @@ elif mode==2:
             navale=bataille(joueur1, bateaux1, case2)
             tir(joueur2Tir, case2, navale)
             serv.serveurOut.serv_send(self2, joueur2, joueur2Tir)
-
+            
+    serv.serveur.input_serveur(self, perdu())
+    print(perdu(), 'a perdu !')
+    
 elif mode==3:
     #while perdu()==False:
         #serv.client()
@@ -174,10 +170,11 @@ elif mode==3:
     i= Thread2()
     i.start()
     #serv.client()
-    while True:
-        serv.client.input_client(self)
+    perdu=False
+    while not perdu:
+        perdu=serv.client.input_client(self)
+    
+    print(perdu, 'a perdu !')
+    i.stop()
         
    
-
-        
-    #c.start() 
