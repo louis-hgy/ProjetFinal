@@ -80,19 +80,23 @@ def perdu():
 
     
 class Thread2 (threading.Thread):
-    def __init__(self):      # jusqua = donnée supplémentaire
-        threading.Thread.__init__(self)  # ne pas oublier cette ligne
-        # (appel au constructeur de la classe mère)          # donnée supplémentaire ajoutée à la classe
-
+    def __init__(self):     
+        threading.Thread.__init__(self) 
+        self.running = True
+        
     def run(self):
         self2=serv.clientIn()
-        while True:
+        while self.running:
             serv.clientIn.client_send(self2)
+        
             #time.sleep(0.08)
-            
+        print('fffffff')
+        serv.clientIn.stop(self2)
+        
     def stop(self):
-        serv.clientIn.stop(self)
-        self._running = False
+        self.running = False
+        
+        
             
             
 
@@ -174,7 +178,8 @@ elif mode==3:
     while not perdu:
         perdu=serv.client.input_client(self)
     
+    Thread2().stop()
     print(perdu, 'a perdu !')
-    i.stop()
+    
         
    

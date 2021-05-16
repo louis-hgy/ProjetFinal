@@ -136,6 +136,7 @@ class clientIn(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.running=True
                     
             #connection=False
             #while connection==False:
@@ -150,22 +151,29 @@ class clientIn(threading.Thread):
         
                 
     def client_send(self):
-        #while True:
-        joueur = self.sockt.recv(1024)
-        joueur = joueur.decode("utf-8")
-        joueur = eval(joueur)
-        print(joueur)
+        if self.running:
+            joueur = self.sockt.recv(1024)
+            joueur = joueur.decode("utf-8")
+            if self.running:
+                print(self.running)
+                try:
+                    joueur = eval(joueur)
+                except SyntaxError:
+                    self.sockt.close()
+                print(joueur)
             
-        joueurTir = self.sockt.recv(1024)
-        joueurTir = joueurTir.decode("utf-8")
-        joueurTir = eval(joueurTir)
-        print(joueurTir)
+            joueurTir = self.sockt.recv(1024)
+            joueurTir = joueurTir.decode("utf-8")
+            joueurTir = eval(joueurTir)
+            print(joueurTir)
             
-        #serv.close()
-        return joueur, joueurTir
+            #serv.close()
+            return joueur, joueurTir
+
         
     def stop(self):
+        self.running=False
         self.sockt.close()
-        self._runnig=False
+        
 
 
