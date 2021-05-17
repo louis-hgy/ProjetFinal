@@ -205,7 +205,10 @@ class interface():
         
             
     def stop():
-        pygame.quit()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+
         
         
 class lauched(threading.Thread):
@@ -216,6 +219,9 @@ class lauched(threading.Thread):
         self.launched = True
         
     def run(self):
+        while self.launched:
+            interface.stop()
+        """
         while self.running and self.launched:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -225,7 +231,7 @@ class lauched(threading.Thread):
             self.clock.tick(30)
         interface.stop()
         pygame.quit()
-                
+        """    
     def stop(self):
         self.running = False
         pygame.quit()

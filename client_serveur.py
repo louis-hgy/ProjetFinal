@@ -1,7 +1,7 @@
 #coding:utf-8
 import socket, threading, time
 
-host, port =('localhost',5566)
+host, port =('10.0.0.19',5566) #localhost
 #sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 class serveur(threading.Thread):
