@@ -1,4 +1,4 @@
-import pygame, time
+import pygame, time, threading
 
 
 """
@@ -8,7 +8,6 @@ pygame.NOFRAME
 
 Rect.colliderect()
 """
-
 
 class interface():
     
@@ -72,13 +71,14 @@ class interface():
         pygame.quit()
         
         
-    def affichage(self, message, input):
+    def affichage(self, joueur, joueurTir, message, input):
+        """
         joueur=([[0 for x in range(10)]for x in range(10)])
         joueur[1][1]=1
         joueurTir=([[0 for x in range(10)]for x in range(10)])
         joueurTir[1][1]=1
         joueurTir[2][1]=2
-    
+        """
     
     
         self.window_surface.fill(self.white)
@@ -182,8 +182,9 @@ class interface():
         pygame.display.flip()
         
         case=[]
+        
         launched = True
-        while launched:
+        while launched and input:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     launched = False
@@ -200,11 +201,40 @@ class interface():
                                 return case
                 
             self.clock.tick(30)
+        #pygame.quit()
+        
+            
+    def stop():
         pygame.quit()
         
+        
+class lauched(threading.Thread):
+    def __init__(self):     
+        threading.Thread.__init__(self) 
+        self.clock = pygame.time.Clock()
+        self.running = True
+        self.launched = True
+        
+    def run(self):
+        while self.running and self.launched:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.launched = False
+                    interface.stop()
+                    pygame.quit()
+            self.clock.tick(30)
+        interface.stop()
+        pygame.quit()
+                
+    def stop(self):
+        self.running = False
+        pygame.quit()
+
+"""       
 self=interface()  
 interface.menu(self)
 print("ee")
 time.sleep(0.1)
 interface.affichage(self, "TEST", True)
 pygame.quit()
+"""

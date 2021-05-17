@@ -1,6 +1,7 @@
 import client_serveur as serv
 import threading
 import time
+import interface as inter
 
 joueur1=([[0 for x in range(10)]for x in range(10)])
 joueur2=([[0 for x in range(10)]for x in range(10)])
@@ -14,8 +15,10 @@ bateaux2={'porte-avion': 5}
 def initialisation (joueur):
     
     for cle,valeur in bateaux2.items():
-        bateau1 = list(input("Entrez la première extrémité du {} ({} cases)".format(cle, valeur)))
-        bateau2 = list(input("Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur)))
+        #bateau1 = list(input("Entrez la première extrémité du {} ({} cases)".format(cle, valeur)))
+        #bateau2 = list(input("Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur)))
+        bateau1 = inter.interface.affichage(selfIn, joueur, joueur1Tir, "Entrez la première extrémité du {} ({} cases)".format(cle, valeur), True)
+        bateau2 = inter.interface.affichage(selfIn, joueur, joueur1Tir, "Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur), True)
         if bateau1[0]==bateau2[0]:
             for i in range(int(bateau1[1])-1,int(bateau2[1])):
                 joueur[ord(bateau1[0])-65][i]=cle
@@ -45,21 +48,21 @@ def initialisation_client (self, joueur):
 #joueur1[1][1]='torpilleur'
 def tir(joueurTir, case, bataille):
     if bataille!=None:
-        joueurTir[ord(case[0])-65][int(case[1])]=2
+        joueurTir[ord(case[0])-65][int(case[1])-1]=2
     else:
-        joueurTir[ord(case[0])-65][int(case[1])]=1
+        joueurTir[ord(case[0])-65][int(case[1])-1]=1
         
 
 
 
 def bataille(joueur, bateaux, case):
-    list(case)
-    if joueur[ord(case[0])-65][int(case[1])] != 0 :
-        if bateaux[joueur[ord(case[0])-65][int(case[1])]]-1 == 0:
-            bateaux[joueur[ord(case[0])-65][int(case[1])]]=0
+    #list(case)
+    if joueur[ord(case[0])-65][int(case[1])-1] != 0 :
+        if bateaux[joueur[ord(case[0])-65][int(case[1])-1]]-1 == 0:
+            bateaux[joueur[ord(case[0])-65][int(case[1])-1]]=0
             return 'Coulé'
         else:
-            bateaux[joueur[ord(case[0])-65][int(case[1])]] -= 1
+            bateaux[joueur[ord(case[0])-65][int(case[1])-1]] -= 1
             return 'Touché'
     else:
         return None
@@ -106,29 +109,43 @@ class Thread2 (threading.Thread):
 
     
     
-
-mode=int(input("1. mode 1 ordinateur \n 2. mode réseau (serveur) \n 3. mode réseau (client)"))
+selfIn=inter.interface()
+selfLaunch = inter.lauched()
+#selfLaunch.start()
+mode=inter.interface.menu(selfIn)
+#mode=int(input("1. mode 1 ordinateur \n 2. mode réseau (serveur) \n 3. mode réseau (client)"))
 
 if mode==1:
+
     initialisation(joueur1)
     initialisation(joueur2)
+    #inter.interface.affichage(selfIn, joueur2, joueur2Tir, "Joueur 2", False)
 
     while perdu()==False:
         navale=""
         print(perdu())
         while navale!=None and perdu()==False:
-            case = list(input("Joueur 1, entrez une case"))
+            case = inter.interface.affichage(selfIn, joueur1, joueur1Tir, "Joueur 1, entrez une case", True)
             navale=bataille(joueur2, bateaux2, case)
             print(navale)
             print( bateaux2['porte-avion'])
             tir(joueur1Tir, case, navale)
+            inter.interface.affichage(selfIn, joueur1, joueur1Tir, navale, False)
+            time.sleep(3)
         
         navale=""
         while navale!=None and perdu()==False:
-            case = list(input("Joueur 2, entrez une case"))
+            case = inter.interface.affichage(selfIn, joueur2, joueur2Tir, "Joueur 2, entrez une case", True)
             navale=bataille(joueur1, bateaux1, case)
             tir(joueur2Tir, case, navale)
+            inter.interface.affichage(selfIn, joueur2, joueur2Tir, navale, False)
+            time.sleep(3)
+            
     print(perdu(), "a perdu !")
+    inter.interface.affichage(selfIn, [[0]], [[0]], perdu() + ' a perdu !', False)
+    time.sleep(3)
+    
+    inter.lauched.stop(selfLaunch)
             
 elif mode==2:
     
