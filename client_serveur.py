@@ -1,13 +1,14 @@
 #coding:utf-8
 import socket, threading, time
+import interface as inter
 
-host, port =('10.0.0.19',5566) #localhost
+host, port =('localhost',5566) #localhost
 #sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-class serveur(threading.Thread):
+class serveur():
     
     def __init__(self):
-        threading.Thread.__init__(self)
+        #threading.Thread.__init__(self)
         self.sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sockt.bind((host, port))
         self.sockt.listen(5)
@@ -19,7 +20,7 @@ class serveur(threading.Thread):
             print('erreur connexion')
         
 
-    def input_serveur(self, message):
+    def input_serveur(self, joueur, joueurTir, message, input):
     
         #if sock==[]:
         #sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -29,6 +30,8 @@ class serveur(threading.Thread):
         #print('serveur démarré')
     
         try:
+            message = (joueur, joueurTir, message, input)
+            message = str(message)
             message = message.encode("utf-8")
             self.conn.sendall(message)
             print('send')
@@ -42,6 +45,7 @@ class serveur(threading.Thread):
                 input = self.conn.recv(1024)
             
             input = input.decode("utf-8")
+            input = eval(input)
             print(input)
             print("test")
         
@@ -102,24 +106,28 @@ class client(threading.Thread):
                 #    connection=False
         
 
-    def input_client(self):
+    def input_client(self, selfIn):
     
         inpt=''
         while inpt=='':
             try:
                 inpt = self.sockt.recv(1024)
                 inpt = inpt.decode("utf-8")
+                inpt = eval(inpt)
                 print(inpt)
             except:
                 print("error recv")
                 
-        if inpt=='Joueur 1' or inpt=='Joueur 2':
-            return inpt
+        if inpt[2]=='Joueur 1' or inpt[2]=='Joueur 2':
+            return inpt[2]
         
         else:
-            case=input(inpt)
+            #case=input(inpt[2])
+            case=inter.interface.affichage(selfIn, inpt[0], inpt[1], inpt[2], inpt[3])
+
     
             try:
+                case = str(case)
                 case = case.encode("utf-8")
                 self.sockt.sendall(case)
     
@@ -159,6 +167,7 @@ class clientIn(threading.Thread):
                 try:
                     joueur = eval(joueur)
                 except SyntaxError:
+                    print("erreur fin")
                     self.sockt.close()
                 print(joueur)
             

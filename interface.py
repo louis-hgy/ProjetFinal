@@ -13,6 +13,8 @@ class interface():
     
     def __init__(self):
         pygame.init()
+        
+        self.launched=True
 
         self.black = (0,0,0)
         self.white = (255, 255, 255)
@@ -23,7 +25,7 @@ class interface():
 
         pygame.display.set_caption("Bataille Navale")
         
-        self.window_surface = pygame.display.set_mode((1600, 800))
+        self.window_surface = pygame.display.set_mode((1600, 800), pygame.FULLSCREEN)
         self.window_surface.fill(self.white)
         
         self.clock = pygame.time.Clock()
@@ -60,10 +62,10 @@ class interface():
                     if mode1.collidepoint(event.pos):
                         print('1')
                         return 1
-                    if mode2.collidepoint(event.pos):
+                    elif mode2.collidepoint(event.pos):
                         print('2')
                         return 2
-                    if mode3.collidepoint(event.pos):
+                    elif mode3.collidepoint(event.pos):
                         print('3')
                         return 3
             self.clock.tick(30)
@@ -79,7 +81,6 @@ class interface():
         joueurTir[1][1]=1
         joueurTir[2][1]=2
         """
-    
     
         self.window_surface.fill(self.white)
         
@@ -180,14 +181,17 @@ class interface():
         
 
         pygame.display.flip()
+        print("eeee")
         
         case=[]
         
-        launched = True
-        while launched and input:
+        #launched = True
+        
+        while self.launched and input:
+            pygame.display.flip()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    launched = False
+                    self.launched = False
                 
                 elif input:
                     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -198,16 +202,28 @@ class interface():
                             if valeur.collidepoint(event.pos):
                                 case.append(cle)
                                 print(case)
-                                return case
-                
+                                return case  
             self.clock.tick(30)
         #pygame.quit()
         
+        
             
-    def stop():
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
+    def stop(self):
+        while self.launched:
+            #print('ebut')
+            #pygame.display.flip()
+            for event in pygame.event.get():
+                print('test')
+                if event.type == pygame.QUIT:
+                    print('fin')
+                    self.launched=False
+                    pygame.display.quit()
+                    pygame.quit()
+                    return False
+            
+            self.clock.tick(30)
+                
+                
 
         
         

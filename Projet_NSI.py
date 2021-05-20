@@ -13,7 +13,6 @@ bateaux2={'porte-avion': 5, 'croiseur': 4, 'sous-marin': 3, 'contre-torpilleur':
 bateaux2={'porte-avion': 5}
 
 def initialisation (joueur):
-    
     for cle,valeur in bateaux2.items():
         #bateau1 = list(input("Entrez la première extrémité du {} ({} cases)".format(cle, valeur)))
         #bateau2 = list(input("Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur)))
@@ -31,9 +30,9 @@ def initialisation_client (self, joueur):
     for cle,valeur in bateaux2.items():
         bateau1, bateau2 = [], []
         while bateau1==[]:
-            bateau1 = list(serv.serveur.input_serveur(self, "Entrez la première extrémité du {} ({} cases)".format(cle, valeur)))
+            bateau1 = serv.serveur.input_serveur(self, joueur, joueur1Tir, "Entrez la première extrémité du {} ({} cases)".format(cle, valeur), True)
         while bateau2==[]:
-            bateau2 = list(serv.serveur.input_serveur(self, "Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur)))
+            bateau2 = serv.serveur.input_serveur(self, joueur, joueur1Tir, "Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur), True)
         if bateau1[0]==bateau2[0]:
             for i in range(int(bateau1[1])-1,int(bateau2[1])):
                 joueur[ord(bateau1[0])-65][i]=cle
@@ -81,7 +80,7 @@ def perdu():
 #bataille(joueur1, 'B2')
 #bataille(joueur1, 'C3')
 
-    
+"""   
 class Thread2 (threading.Thread):
     def __init__(self):     
         threading.Thread.__init__(self) 
@@ -98,19 +97,27 @@ class Thread2 (threading.Thread):
         
     def stop(self):
         self.running = False
+"""        
+class Thread3 (threading.Thread):
+    def __init__(self):     
+        threading.Thread.__init__(self) 
         
+    def run(self):
+        inter.interface.stop(selfIn)
         
-            
+            #time.sleep(0.08)
+        print('fffffff')
+
             
 
-#s = Thread()
+s = Thread3()
 
      
 
     
-    
+  
 selfIn=inter.interface()
-selfLaunch = inter.lauched()
+#selfLaunch = inter.lauched()
 #selfLaunch.start()
 mode=inter.interface.menu(selfIn)
 #mode=int(input("1. mode 1 ordinateur \n 2. mode réseau (serveur) \n 3. mode réseau (client)"))
@@ -151,36 +158,46 @@ elif mode==2:
     
     #s.start()
     self=serv.serveur()
+    
+    #s.start()
+    """
     self2=serv.serveurOut()
+    """
     initialisation(joueur1)
     initialisation_client(self, joueur2)
-    
+    """
     serv.serveurOut.serv_send(self2, joueur2, joueur2Tir)
-
+    """
     while perdu()==False:
         #serv.serveur(joueur2, joueur2Tir)
         navale=""
         print(perdu())
         while navale!=None and perdu()==False:    
-            case = list(input("Joueur 1, entrez une case"))
+            case = inter.interface.affichage(selfIn, joueur1, joueur1Tir, "Joueur 1, entrez une case", True)
             navale=bataille(joueur2, bateaux2, case)
             #print(navale)
             #print( bateaux2['porte-avion'])
             tir(joueur1Tir, case, navale)
+            """
             serv.serveurOut.serv_send(self2, joueur2, joueur2Tir)
+            """
+            inter.interface.affichage(selfIn, joueur1, joueur1Tir, navale, False)
+            time.sleep(3)
             
         #serv.serveur(joueur2, joueur2Tir)
         navale=""
         while navale!=None and perdu()==False:
             case2=[]
             while case2==[]:
-                case2 = list(serv.serveur.input_serveur(self, "Joueur 2, entrez une case"))
+                case2 = serv.serveur.input_serveur(self, joueur2, joueur2Tir, "Joueur 2, entrez une case", True)
         
             navale=bataille(joueur1, bateaux1, case2)
             tir(joueur2Tir, case2, navale)
+            """
             serv.serveurOut.serv_send(self2, joueur2, joueur2Tir)
+            """
             
-    serv.serveur.input_serveur(self, perdu())
+    serv.serveur.input_serveur(self, joueur2, joueur2Tir, perdu(), False)
     print(perdu(), 'a perdu !')
     
 elif mode==3:
@@ -188,14 +205,17 @@ elif mode==3:
         #serv.client()
     self=serv.client()
     #self2=serv.clientIn()
+    """
     i= Thread2()
     i.start()
+    """
     #serv.client()
     perdu=False
     while not perdu:
-        perdu=serv.client.input_client(self)
-    
+        perdu=serv.client.input_client(self, selfIn)
+    """
     Thread2().stop()
+    """
     print(perdu, 'a perdu !')
     
         
