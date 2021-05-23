@@ -7,10 +7,10 @@ host, port =('localhost',5566) #localhost
 
 class serveur():
     
-    def __init__(self):
+    def __init__(self, adresse):
         #threading.Thread.__init__(self)
         self.sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.sockt.bind((host, port))
+        self.sockt.bind((adresse, port))
         self.sockt.listen(5)
         print('listen')
         try:
@@ -20,8 +20,10 @@ class serveur():
             print('erreur connexion')
         
 
-    def input_serveur(self, joueur, joueurTir, message, input):
-    
+    def input_serveur(self, joueur, joueurTir, message, inp):
+        testt=True
+        if message=='Vous avez gagné !' or message=='Vous avez perdu !':
+            testt=False
         #if sock==[]:
         #sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
@@ -30,30 +32,30 @@ class serveur():
         #print('serveur démarré')
     
         try:
-            message = (joueur, joueurTir, message, input)
+            message = (joueur, joueurTir, message, inp)
             message = str(message)
             message = message.encode("utf-8")
             self.conn.sendall(message)
             print('send')
         except:
             print("erreur envoi")
-            
-        if message!=(b'Joueur 1') and message!=(b'Joueur 2'):
+        print("ttttttttttttttttt", inp)  
+        if testt:
             print('in')
-            input=''
-            while input=='':
-                input = self.conn.recv(1024)
+            inpt=''
+            while inpt=='':
+                inpt = self.conn.recv(1024)
             
-            input = input.decode("utf-8")
-            input = eval(input)
-            print(input)
+            inpt = inpt.decode("utf-8")
+            inpt = eval(inpt)
+            print(inpt)
             print("test")
         
 
         #conn.close()
         #sockt.close()
        
-            return input
+            return inpt
 
 class serveurOut(threading.Thread):
 
@@ -90,14 +92,14 @@ class serveurOut(threading.Thread):
 
 class client(threading.Thread):
     
-    def __init__(self):
+    def __init__(self, adresse):
         threading.Thread.__init__(self)
         self.sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 
             #connection=False
             #while connection==False:
         try:
-            self.sockt.connect((host, port))
+            self.sockt.connect((adresse, port))
             print("Client conn")
                 #    connection=True
         
@@ -107,7 +109,7 @@ class client(threading.Thread):
         
 
     def input_client(self, selfIn):
-    
+        case=[]
         inpt=''
         while inpt=='':
             try:
@@ -118,14 +120,16 @@ class client(threading.Thread):
             except:
                 print("error recv")
                 
-        if inpt[2]=='Joueur 1' or inpt[2]=='Joueur 2':
-            return inpt[2]
+        if inpt[2]=='Vous avez gagné !' or inpt[2]=='Vous avez perdu !':
+            #case=inter.interface.affichage(selfIn, inpt[0], inpt[1],  "{} a perdu !".format(inpt[2]), inpt[3])
+            inter.interface.affichage(selfIn, inpt[0], inpt[1], inpt[2], inpt[3])
+            return True
         
         else:
             #case=input(inpt[2])
             case=inter.interface.affichage(selfIn, inpt[0], inpt[1], inpt[2], inpt[3])
 
-    
+        if case!=[]:
             try:
                 case = str(case)
                 case = case.encode("utf-8")
@@ -134,7 +138,9 @@ class client(threading.Thread):
             except ConnectionRefusedError:
                 print('erreur send')
             return False
-        #self.sockt.close()
+        
+    def stop(self):
+        self.sockt.close()
 
 
 

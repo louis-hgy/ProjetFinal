@@ -24,6 +24,7 @@ def initialisation (joueur):
         else:
             for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
                 joueur[i][int(bateau1[1])-1]=cle
+    inter.interface.affichage(selfIn, joueur, joueur1Tir, "Veuilllez patienter...", False)
                 
 def initialisation_client (self, joueur):
     
@@ -39,6 +40,7 @@ def initialisation_client (self, joueur):
         else:
             for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
                 joueur[i][int(bateau1[1])-1]=cle
+    serv.serveur.input_serveur(self, joueur, joueur2Tir, "Veuilllez patienter...", False)
                 
     
 #initialisation()
@@ -157,7 +159,9 @@ if mode==1:
 elif mode==2:
     
     #s.start()
-    self=serv.serveur()
+    adresse=inter.interface.ipAdresse(selfIn)
+    inter.interface.affichage(selfIn, joueur1, joueur1Tir, "Veillez patienter...", False)
+    self=serv.serveur(adresse)
     
     #s.start()
     """
@@ -185,6 +189,7 @@ elif mode==2:
             time.sleep(3)
             
         #serv.serveur(joueur2, joueur2Tir)
+        inter.interface.affichage(selfIn, joueur1, joueur1Tir, "Veillez patienter...", False)
         navale=""
         while navale!=None and perdu()==False:
             case2=[]
@@ -193,17 +198,32 @@ elif mode==2:
         
             navale=bataille(joueur1, bateaux1, case2)
             tir(joueur2Tir, case2, navale)
+            serv.serveur.input_serveur(self, joueur2, joueur2Tir, navale, False)
+            time.sleep(3)
             """
             serv.serveurOut.serv_send(self2, joueur2, joueur2Tir)
             """
-            
-    serv.serveur.input_serveur(self, joueur2, joueur2Tir, perdu(), False)
+        serv.serveur.input_serveur(self, joueur2, joueur2Tir, "Veuillez patienter...", False)
+    
+    if perdu()=='Joueur 1':
+        perdu1="Vous avez perdu !"
+        perdu2="Vous avez gagné !"
+    else:
+        perdu1="Vous avez gagné !"
+        perdu2="Vous avez perdu !"
+        
+    serv.serveur.input_serveur(self, joueur2, joueur2Tir, perdu2, False)
+    inter.interface.affichage(selfIn, joueur1, joueur1Tir, perdu1, False)
+    time.sleep(5)
     print(perdu(), 'a perdu !')
+    inter.interface.stop()
     
 elif mode==3:
     #while perdu()==False:
         #serv.client()
-    self=serv.client()
+    adresse=inter.interface.ipAdresse(selfIn)
+    inter.interface.affichage(selfIn, joueur1, joueur1Tir, "Veillez patienter...", False)
+    self=serv.client(adresse)
     #self2=serv.clientIn()
     """
     i= Thread2()
@@ -213,10 +233,16 @@ elif mode==3:
     perdu=False
     while not perdu:
         perdu=serv.client.input_client(self, selfIn)
+    time.sleep(5)
     """
     Thread2().stop()
     """
     print(perdu, 'a perdu !')
+    inter.interface.stop()
+    serv.client.stop(self)
+    
+elif mode==4:
+    print("mode contre ordinateur")
     
         
    

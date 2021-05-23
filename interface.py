@@ -36,19 +36,22 @@ class interface():
         mode1 = pygame.Rect(10, 10, 300, 50)
         mode2 = pygame.Rect(10, 50, 300, 50)
         mode3 = pygame.Rect(10, 90, 300, 50)
+        mode4 = pygame.Rect(10, 130, 300, 50)
 
         pygame.draw.rect(self.window_surface, self.black, mode1, 5)
         pygame.draw.rect(self.window_surface, self.black, mode2, 5)
         pygame.draw.rect(self.window_surface, self.black, mode3, 5)
-
+        pygame.draw.rect(self.window_surface, self.black, mode4, 5)
 
         textMode1 = self.font.render("1. Mode 1 ordinateur", True, self.black)
         textMode2 = self.font.render("2. Mode réseau (serveur)", True, self.black)
         textMode3 = self.font.render("3. Mode réseau (client)", True, self.black)
+        textMode4 = self.font.render("4. Mode contre ordinateur", True, self.black)
 
         self.window_surface.blit(textMode1, (20, 20))
         self.window_surface.blit(textMode2, (20, 60))
         self.window_surface.blit(textMode3, (20, 100))
+        self.window_surface.blit(textMode4, (20, 140))
 
         pygame.display.flip()
         
@@ -68,11 +71,46 @@ class interface():
                     elif mode3.collidepoint(event.pos):
                         print('3')
                         return 3
+                    elif mode4.collidepoint(event.pos):
+                        print('4')
+                        return 4
             self.clock.tick(30)
         
         pygame.quit()
         
+    def ipAdresse(self):
+        ip = pygame.Rect(10, 130, 300, 50)
+        text = pygame.Rect(10, 10, 600, 50)
+        adresse=''
         
+        launched=True
+        while launched:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    launched = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        print(adresse)
+                        return adresse
+                    elif event.key == pygame.K_BACKSPACE:
+                        adresse = adresse[:-1]
+                    else:
+                        adresse += event.unicode
+                            
+            self.window_surface.fill(self.white)
+            
+            pygame.draw.rect(self.window_surface, self.black, ip, 5)
+            pygame.draw.rect(self.window_surface, self.black, text, 5)
+            
+            self.window_surface.blit(self.font.render(adresse, True, self.black), (20, 140))
+            self.window_surface.blit(self.font.render("Entrez adresse IP du serveur :", True, self.black), (20, 20))
+            
+    
+            pygame.display.flip()
+            self.clock.tick(30)
+            
+        pygame.quit()    
+            
     def affichage(self, joueur, joueurTir, message, input):
         """
         joueur=([[0 for x in range(10)]for x in range(10)])
@@ -81,6 +119,8 @@ class interface():
         joueurTir[1][1]=1
         joueurTir[2][1]=2
         """
+        if message==None:
+            message="Dans l'eau !"
     
         self.window_surface.fill(self.white)
         
@@ -205,9 +245,11 @@ class interface():
                                 return case  
             self.clock.tick(30)
         #pygame.quit()
+    def stop():
+        pygame.display.quit()
+        pygame.quit()    
         
-        
-            
+    """       
     def stop(self):
         while self.launched:
             #print('ebut')
@@ -222,7 +264,7 @@ class interface():
                     return False
             
             self.clock.tick(30)
-                
+        """      
                 
 
         
