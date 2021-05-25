@@ -6,7 +6,11 @@ pygame.FULLSCREEN
 pygame.RESIZABLE
 pygame.NOFRAME
 
-Rect.colliderect()
+info = pygame.display.Info()
+ 
+print info.current_w
+print info.current_h
+fenetre = pygame.display.set_mode((event.w, event.h), RESIZABLE)
 """
 
 class interface():
@@ -22,10 +26,18 @@ class interface():
         self.red = (255, 0, 0)
 
         self.font = pygame.font.SysFont("arial", 25)
+        self.fontTitre = pygame.font.SysFont("arialbd", 50)
+        
+        self.fond = pygame.image.load("img/BattleShip.png")
+        
+        self.tir_son = pygame.mixer.Sound("son/Tir.mp3")
+        self.coule_son = pygame.mixer.Sound("son/Coule.wav")
+        self.touche_son = pygame.mixer.Sound("son/Touche.mp3")
+        self.eau_son = pygame.mixer.Sound("son/Eau.wav")
 
         pygame.display.set_caption("Bataille Navale")
         
-        self.window_surface = pygame.display.set_mode((1600, 800), pygame.FULLSCREEN)
+        self.window_surface = pygame.display.set_mode((1366, 768), pygame.RESIZABLE)
         self.window_surface.fill(self.white)
         
         self.clock = pygame.time.Clock()
@@ -33,25 +45,27 @@ class interface():
         print('init')    
 
     def menu(self):
-        mode1 = pygame.Rect(10, 10, 300, 50)
-        mode2 = pygame.Rect(10, 50, 300, 50)
-        mode3 = pygame.Rect(10, 90, 300, 50)
-        mode4 = pygame.Rect(10, 130, 300, 50)
+        self.window_surface.blit(self.fond, (0,0))
+        
+        mode1 = pygame.Rect(200, 100, 458, 150)
+        mode2 = pygame.Rect(200, 350, 458, 150)
+        mode3 = pygame.Rect(708, 350, 458, 150)
+        mode4 = pygame.Rect(708, 100, 458, 150)
 
-        pygame.draw.rect(self.window_surface, self.black, mode1, 5)
-        pygame.draw.rect(self.window_surface, self.black, mode2, 5)
-        pygame.draw.rect(self.window_surface, self.black, mode3, 5)
-        pygame.draw.rect(self.window_surface, self.black, mode4, 5)
+        pygame.draw.rect(self.window_surface, self.black, mode1, 8)
+        pygame.draw.rect(self.window_surface, self.black, mode2, 8)
+        pygame.draw.rect(self.window_surface, self.black, mode3, 8)
+        pygame.draw.rect(self.window_surface, self.black, mode4, 8)
 
-        textMode1 = self.font.render("1. Mode 1 ordinateur", True, self.black)
-        textMode2 = self.font.render("2. Mode réseau (serveur)", True, self.black)
-        textMode3 = self.font.render("3. Mode réseau (client)", True, self.black)
-        textMode4 = self.font.render("4. Mode contre ordinateur", True, self.black)
+        textMode1 = self.fontTitre.render("1. Mode 1 ordinateur", True, self.black)
+        textMode2 = self.fontTitre.render("3. Mode réseau (serveur)", True, self.black)
+        textMode3 = self.fontTitre.render("4. Mode réseau (client)", True, self.black)
+        textMode4 = self.fontTitre.render("2. Mode contre ordinateur", True, self.black)
 
-        self.window_surface.blit(textMode1, (20, 20))
-        self.window_surface.blit(textMode2, (20, 60))
-        self.window_surface.blit(textMode3, (20, 100))
-        self.window_surface.blit(textMode4, (20, 140))
+        self.window_surface.blit(textMode1, (240, 150))
+        self.window_surface.blit(textMode2, (240, 400))
+        self.window_surface.blit(textMode3, (748, 400))
+        self.window_surface.blit(textMode4, (728, 150))
 
         pygame.display.flip()
         
@@ -79,8 +93,8 @@ class interface():
         pygame.quit()
         
     def ipAdresse(self):
-        ip = pygame.Rect(10, 130, 300, 50)
-        text = pygame.Rect(10, 10, 600, 50)
+        text = pygame.Rect(383, 200, 600, 100)
+        ip = pygame.Rect(533, 350, 300, 50)
         adresse=''
         
         launched=True
@@ -100,10 +114,10 @@ class interface():
             self.window_surface.fill(self.white)
             
             pygame.draw.rect(self.window_surface, self.black, ip, 5)
-            pygame.draw.rect(self.window_surface, self.black, text, 5)
+            pygame.draw.rect(self.window_surface, self.black, text, 6)
             
-            self.window_surface.blit(self.font.render(adresse, True, self.black), (20, 140))
-            self.window_surface.blit(self.font.render("Entrez adresse IP du serveur :", True, self.black), (20, 20))
+            self.window_surface.blit(self.font.render(adresse, True, self.black), (553, 360))
+            self.window_surface.blit(self.fontTitre.render("Entrez adresse IP du serveur :", True, self.black), (443, 230))
             
     
             pygame.display.flip()
@@ -111,14 +125,7 @@ class interface():
             
         pygame.quit()    
             
-    def affichage(self, joueur, joueurTir, message, input):
-        """
-        joueur=([[0 for x in range(10)]for x in range(10)])
-        joueur[1][1]=1
-        joueurTir=([[0 for x in range(10)]for x in range(10)])
-        joueurTir[1][1]=1
-        joueurTir[2][1]=2
-        """
+    def affichage(self, joueur, joueurTir, joueurTir_2, message, input):
         if message==None:
             message="Dans l'eau !"
     
@@ -133,7 +140,7 @@ class interface():
 
 
 
-        messageRect = pygame.Rect(10, 10, 1510, 100)
+        messageRect = pygame.Rect(10, 10, 1346, 100)
 
         pygame.draw.rect(self.window_surface, self.black, messageRect, 5)
         
@@ -218,20 +225,19 @@ class interface():
                     pygame.draw.rect(self.window_surface, self.blue, pygame.Rect(y[j]+550, x[i], 50, 50))
                 elif joueurTir[i][j]==2:
                     pygame.draw.rect(self.window_surface, self.red, pygame.Rect(y[j]+550, x[i], 50, 50))
-        
+                if joueurTir_2[i][j]==2:
+                    pygame.draw.rect(self.window_surface, self.red, pygame.Rect(y[j], x[i], 50, 50))
 
         pygame.display.flip()
         print("eeee")
         
         case=[]
-        
-        #launched = True
-        
         while self.launched and input:
             pygame.display.flip()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.launched = False
+                    interface.stop()
                 
                 elif input:
                     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -245,60 +251,23 @@ class interface():
                                 return case  
             self.clock.tick(30)
         #pygame.quit()
+            
+    def son(self, son):
+        if son==None:
+            self.tir_son.play()
+            time.sleep(self.tir_son.get_length())
+            self.eau_son.play()
+        elif son=='Touché':
+            self.tir_son.play()
+            time.sleep(self.tir_son.get_length())
+            self.touche_son.play()
+        elif son=='Coulé':
+            self.tir_son.play()
+            time.sleep(self.tir_son.get_length())
+            self.touche_son.play()
+            self.coule_son.play()
+            
     def stop():
         pygame.display.quit()
         pygame.quit()    
         
-    """       
-    def stop(self):
-        while self.launched:
-            #print('ebut')
-            #pygame.display.flip()
-            for event in pygame.event.get():
-                print('test')
-                if event.type == pygame.QUIT:
-                    print('fin')
-                    self.launched=False
-                    pygame.display.quit()
-                    pygame.quit()
-                    return False
-            
-            self.clock.tick(30)
-        """      
-                
-
-        
-        
-class lauched(threading.Thread):
-    def __init__(self):     
-        threading.Thread.__init__(self) 
-        self.clock = pygame.time.Clock()
-        self.running = True
-        self.launched = True
-        
-    def run(self):
-        while self.launched:
-            interface.stop()
-        """
-        while self.running and self.launched:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.launched = False
-                    interface.stop()
-                    pygame.quit()
-            self.clock.tick(30)
-        interface.stop()
-        pygame.quit()
-        """    
-    def stop(self):
-        self.running = False
-        pygame.quit()
-
-"""       
-self=interface()  
-interface.menu(self)
-print("ee")
-time.sleep(0.1)
-interface.affichage(self, "TEST", True)
-pygame.quit()
-"""
