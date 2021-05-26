@@ -1,7 +1,7 @@
 import client_serveur as serv
-import threading
-import time
 import interface as inter
+import time
+
 
 joueur1=([[0 for x in range(10)]for x in range(10)])
 joueur2=([[0 for x in range(10)]for x in range(10)])
@@ -14,14 +14,30 @@ bateaux2={'porte-avion': 5, 'croiseur': 4, 'sous-marin': 3, 'contre-torpilleur':
 
 def initialisation (joueur):
     for cle,valeur in bateaux2.items():
-        bateau1 = inter.interface.affichage(selfIn, joueur, joueur1Tir, joueur2Tir, "Entrez la première extrémité du {} ({} cases)".format(cle, valeur), True)
-        bateau2 = inter.interface.affichage(selfIn, joueur, joueur1Tir, joueur2Tir, "Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur), True)
-        if bateau1[0]==bateau2[0]:
-            for i in range(int(bateau1[1])-1,int(bateau2[1])):
-                joueur[ord(bateau1[0])-65][i]=cle
-        else:
-            for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
-                joueur[i][int(bateau1[1])-1]=cle
+        case=False
+        while not case:
+            bateau1 = inter.interface.affichage(selfIn, joueur, joueur1Tir, joueur2Tir, "Cliquez sur la première extrémité du {} ({} cases)".format(cle, valeur), True)
+            bateau2 = inter.interface.affichage(selfIn, joueur, joueur1Tir, joueur2Tir, "Cliquez sur la dernière extrémité du {} ({} cases)".format(cle, valeur), True)
+            if bateau1[0]==bateau2[0]:
+                if int(bateau1[1])-1-int(bateau2[1])==-valeur:
+                    for i in range(int(bateau1[1])-1,int(bateau2[1])):
+                        joueur[ord(bateau1[0])-65][i]=cle
+                    case=True
+                elif int(bateau1[1])+1-int(bateau2[1])==valeur:
+                    for i in range(int(bateau2[1])-1,int(bateau1[1])):
+                        joueur[ord(bateau1[0])-65][i]=cle
+                    case=True
+            elif bateau1[1]==bateau2[1]:
+                if ord(bateau1[0])-65-(ord(bateau2[0])-64)==valeur or ord(bateau1[0])-65-(ord(bateau2[0])-64)==-valeur:
+                    for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
+                        joueur[i][int(bateau1[1])-1]=cle
+                    case=True
+            
+            if not case:
+                inter.interface.affichage(selfIn, joueur, joueur1Tir, joueur2Tir, "Réessayez", False)
+                time.sleep(2)
+            
+
     inter.interface.affichage(selfIn, joueur, joueur1Tir, joueur2Tir, "Veuilllez patienter...", False)
                 
 def initialisation_client (self, joueur):
@@ -70,26 +86,8 @@ def perdu():
         return False
         
 
-"""   
-class Thread2 (threading.Thread):
-    def __init__(self):     
-        threading.Thread.__init__(self) 
-        self.running = True
-        
-    def run(self):
-        self2=serv.clientIn()
-        while self.running:
-            serv.clientIn.client_send(self2)
-        
-            #time.sleep(0.08)
-        print('fffffff')
-        serv.clientIn.stop(self2)
-        
-    def stop(self):
-        self.running = False
-"""        
 
-    
+
   
 selfIn=inter.interface()
 mode=inter.interface.menu(selfIn)
@@ -110,7 +108,7 @@ if mode==1:
         navale=""
         print(perdu())
         while navale!=None and perdu()==False:
-            case = inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, "Joueur 1, entrez une case", True)
+            case = inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, "Joueur 1, cliquez sur une case", True)
             navale=bataille(joueur2, bateaux2, case)
             print(navale)
             print( bateaux2['porte-avion'])
@@ -123,7 +121,7 @@ if mode==1:
         inter.interface.affichage(selfIn, [[0]], [[0]], [[0]], "Passez l'odinateur au Joueur 2", False)
         time.sleep(5)
         while navale!=None and perdu()==False:
-            case = inter.interface.affichage(selfIn, joueur2, joueur2Tir, joueur1Tir, "Joueur 2, entrez une case", True)
+            case = inter.interface.affichage(selfIn, joueur2, joueur2Tir, joueur1Tir, "Joueur 2, cliquez sur une case", True)
             navale=bataille(joueur1, bateaux1, case)
             tir(joueur2Tir, case, navale)
             inter.interface.son(selfIn, navale)
@@ -142,7 +140,7 @@ if mode==1:
 elif mode==2:
     
     adresse=inter.interface.ipAdresse(selfIn)
-    inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, "Veillez patienter...", False)
+    inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, "Veuillez patienter...", False)
     self=serv.serveur(adresse)
     
     initialisation(joueur1)
@@ -152,30 +150,31 @@ elif mode==2:
         navale=""
         print(perdu())
         while navale!=None and perdu()==False:    
-            case = inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, "Entrez une case :", True)
+            case = inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, "Cliquez sur une case :", True)
             
             navale=bataille(joueur2, bateaux2, case)
             tir(joueur1Tir, case, navale)
             
             inter.interface.son(selfIn, navale)
             inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, navale, False)
-            #serv.serveur.input_serveur(self, joueur2, joueur2Tir, joueur1Tir, navale, False)
-            #serv.serveur.input_serveur(self, joueur2, joueur2Tir, joueur1Tir, "Veuillez patienter...", False)
-            time.sleep(3)
+            serv.serveur.input_serveur(self, joueur2, joueur2Tir, joueur1Tir, navale, False)
+            time.sleep(2)
+            serv.serveur.input_serveur(self, joueur2, joueur2Tir, joueur1Tir, "Veuillez patienter...", False)
             
-        inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, "Veillez patienter...", False)
+        inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, "Veuillez patienter...", False)
         navale=""
         while navale!=None and perdu()==False:
             case2=[]
             while case2==[]:
-                case2 = serv.serveur.input_serveur(self, joueur2, joueur2Tir, joueur1Tir, "Entrez une case :", True)
+                case2 = serv.serveur.input_serveur(self, joueur2, joueur2Tir, joueur1Tir, "Cliquez sur une case :", True)
         
             navale=bataille(joueur1, bateaux1, case2)
             tir(joueur2Tir, case2, navale)
             serv.serveur.input_serveur(self, joueur2, joueur2Tir, joueur1Tir, navale, False)
-            #inter.interface.son(selfIn, navale)
-            #inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, navale, False)
-            time.sleep(3)
+            inter.interface.son(selfIn, navale)
+            inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, navale, False)
+            time.sleep(2)
+            inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, "Veuillez patienter...", False)
         
         serv.serveur.input_serveur(self, joueur2, joueur2Tir, joueur1Tir, "Veuillez patienter...", False)
     

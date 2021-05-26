@@ -1,5 +1,5 @@
 #coding:utf-8
-import socket, threading, time
+import socket, time
 import interface as inter
 
 host, port =('localhost',5566) #localhost
@@ -51,10 +51,9 @@ class serveur():
         self.conn.close()
 
 
-class client(threading.Thread):
+class client():
     
     def __init__(self, adresse):
-        threading.Thread.__init__(self)
         self.sockt=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.etat = False 
                 

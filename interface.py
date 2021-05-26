@@ -52,10 +52,10 @@ class interface():
         mode3 = pygame.Rect(708, 350, 458, 150)
         mode4 = pygame.Rect(708, 100, 458, 150)
 
-        pygame.draw.rect(self.window_surface, self.black, mode1, 8)
+        pygame.draw.rect(self.window_surface, self.black, mode1, 5)
         pygame.draw.rect(self.window_surface, self.black, mode2, 8)
         pygame.draw.rect(self.window_surface, self.black, mode3, 8)
-        pygame.draw.rect(self.window_surface, self.black, mode4, 8)
+        pygame.draw.rect(self.window_surface, self.black, mode4, 5)
 
         textMode1 = self.fontTitre.render("1. Mode 1 ordinateur", True, self.black)
         textMode2 = self.fontTitre.render("3. Mode réseau (serveur)", True, self.black)
@@ -191,7 +191,6 @@ class interface():
         
         
         
-        
         pygame.draw.rect(self.window_surface, self.black, pygame.Rect(60, 170, 500, 50), 5)
         pygame.draw.rect(self.window_surface, self.black, pygame.Rect(60, 220, 500, 50), 5)
         pygame.draw.rect(self.window_surface, self.black, pygame.Rect(60, 270, 500, 50), 5)
@@ -229,7 +228,6 @@ class interface():
                     pygame.draw.rect(self.window_surface, self.red, pygame.Rect(y[j], x[i], 50, 50))
 
         pygame.display.flip()
-        print("eeee")
         
         case=[]
         while self.launched and input:
@@ -249,6 +247,15 @@ class interface():
                                 case.append(cle)
                                 print(case)
                                 return case  
+            self.clock.tick(30)
+        nb=0     
+        while self.launched and not input and nb<15:
+            nb+=1
+            pygame.display.flip()
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.launched = False
+                    interface.stop()
             self.clock.tick(30)
         #pygame.quit()
             
