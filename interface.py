@@ -230,7 +230,8 @@ class interface():
         pygame.display.flip()
         
         case=[]
-        while self.launched and input:
+        echec=True
+        while self.launched and input and echec:
             pygame.display.flip()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -246,7 +247,14 @@ class interface():
                             if valeur.collidepoint(event.pos):
                                 case.append(cle)
                                 print(case)
-                                return case  
+                                echec=False
+                                print(ord(case[0])-65,int(case[1]))
+                                if joueurTir[ord(case[0])-65][int(case[1])-1]!=0:
+                                    print('utilisé')
+                                    case=[]
+                                    echec=True
+                                else:
+                                    return case  
             self.clock.tick(30)
         nb=0     
         while self.launched and not input and nb<15:
