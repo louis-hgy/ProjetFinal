@@ -333,20 +333,26 @@ elif mode==4:
             time.sleep(3)
         
         navale=""
-        echec=True
-        while navale!=None and perdu()==False and echec:
-            echec=False
-            nb1case=randint(0,9)
-            nb2case=randint(0,9)
-            if joueurTir[ord(case[0])-65][int(case[1])-1]!=0:
-                print('utilisé')
-                case=[]
-                echec=True
-            else:  
-                case=list(caseordi[nb1case][nb2case])
-                print(case)
-                navale=bataille(joueur1, bateaux1, case)
-                tir(ordinateurTir, case, navale)      
+        inter.interface.affichage(selfIn, joueur1, joueur1Tir, ordinateurTir, "Veuillez patienter...", False)
+        while navale!=None and perdu()==False:
+            echec=True
+            while echec:
+                echec=False
+                nb1case=randint(0,9)
+                nb2case=randint(0,9)
+                if ordinateurTir[nb1case][nb2case]!=0:
+                    print('utilisé')
+                    case=[]
+                    echec=True
+                else:  
+                    case=list(caseordi[nb1case][nb2case])
+                    print(case)
+                    navale=bataille(joueur1, bateaux1, case)
+                    tir(ordinateurTir, case, navale)
+                    inter.interface.son(selfIn, navale)
+                    inter.interface.affichage(selfIn, joueur1, joueur1Tir, ordinateurTir, navale, False)
+                    time.sleep(2)
+                
     
     if perdu()=='Joueur 1':
         perdu1="Vous avez perdu !"

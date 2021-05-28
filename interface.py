@@ -10,8 +10,8 @@ class interface():
 
         self.black = (0,0,0)
         self.white = (255, 255, 255)
-        self.blue = (0, 0, 255)
-        self.red = (255, 0, 0)
+        self.blue = (37, 191, 244)
+        self.red = (244, 39, 39)
         self.grey = (178,190,181)
 
         self.font = pygame.font.SysFont("arial", 25)
