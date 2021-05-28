@@ -243,6 +243,7 @@ if mode==1:
         time.sleep(5)
             
     print(perdu(), "a perdu !")
+    inter.interface.sonPerdu(selfIn, perdu())
     inter.interface.affichage(selfIn, [[0]], [[0]], [[0]], perdu() + ' a perdu !', False)
     time.sleep(5)
     
@@ -296,6 +297,7 @@ elif mode==2:
         perdu2="Vous avez perdu !"
         
     serv.serveur.input_serveur(self, joueur2, joueur2Tir, joueur1Tir, perdu2, False)
+    inter.interface.sonPerdu(selfIn, perdu1)
     inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, perdu1, False)
     time.sleep(5)
     inter.interface.stop()
@@ -310,6 +312,7 @@ elif mode==3:
     perdu=False
     while not perdu:
         perdu=serv.client.input_client(self, selfIn)
+    inter.interface.sonPerdu(selfIn, perdu)
     time.sleep(5)
     
     print(perdu, 'a perdu !')
@@ -358,7 +361,8 @@ elif mode==4:
         perdu1="Vous avez perdu !"
     else:
         perdu1="Vous avez gagné !"
-
+        
+    inter.interface.sonPerdu(selfIn, perdu1)
     inter.interface.affichage(selfIn, [[0]], [[0]], [[0]], perdu1, False)
     time.sleep(5)
     

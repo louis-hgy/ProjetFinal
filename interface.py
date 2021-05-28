@@ -23,6 +23,8 @@ class interface():
         self.coule_son = pygame.mixer.Sound("son/Coule.wav")
         self.touche_son = pygame.mixer.Sound("son/Touche.mp3")
         self.eau_son = pygame.mixer.Sound("son/Eau.wav")
+        self.perdu_son = pygame.mixer.Sound("son/Perdu.wav")
+        self.gagne_son = pygame.mixer.Sound("son/Gagne.wav")
 
         pygame.display.set_caption("Bataille Navale")
         
@@ -269,6 +271,12 @@ class interface():
             time.sleep(self.tir_son.get_length())
             self.touche_son.play()
             self.coule_son.play()
+            
+    def sonPerdu(self, son):
+        if son=="Vous avez perdu !":
+            self.perdu_son.play()
+        else:
+            self.gagne_son.play()
             
     def stop():
         pygame.display.quit()
