@@ -1,17 +1,5 @@
-import pygame, time, threading
-
-
-"""
-pygame.FULLSCREEN
-pygame.RESIZABLE
-pygame.NOFRAME
-
-info = pygame.display.Info()
- 
-print info.current_w
-print info.current_h
-fenetre = pygame.display.set_mode((event.w, event.h), RESIZABLE)
-"""
+#coding:utf-8
+import pygame, time
 
 class interface():
     
@@ -120,7 +108,7 @@ class interface():
             self.window_surface.blit(self.font.render(adresse, True, self.black), (553, 360))
             self.window_surface.blit(self.fontTitre.render("Entrez adresse IP du serveur :", True, self.black), (443, 230))
             
-    
+            
             pygame.display.flip()
             self.clock.tick(30)
             
@@ -249,7 +237,6 @@ class interface():
                                 case.append(cle)
                                 print(case)
                                 echec=False
-                                print(ord(case[0])-65,int(case[1]))
                                 if joueurTir[ord(case[0])-65][int(case[1])-1]!=0:
                                     print('utilisé')
                                     case=[]
@@ -266,7 +253,7 @@ class interface():
                     self.launched = False
                     interface.stop()
             self.clock.tick(30)
-        #pygame.quit()
+            
             
     def son(self, son):
         if son==None:

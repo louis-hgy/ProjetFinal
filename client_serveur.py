@@ -1,8 +1,8 @@
 #coding:utf-8
-import socket, time
+import socket
 import interface as inter
 
-host, port =('localhost',5566) #localhost
+host, port =('localhost',5566)
 
 class serveur():
     
@@ -22,7 +22,6 @@ class serveur():
         testt=True
         if message=='Vous avez gagné !' or message=='Vous avez perdu !':
             testt=False
-        #print('serveur démarré')
     
         try:
             message = (joueur, joueurTir, joueurTir_2, message, inp)
@@ -42,7 +41,6 @@ class serveur():
             inpt = inpt.decode("utf-8")
             inpt = eval(inpt)
             print(inpt)
-            print("test")
         
             return inpt
         
@@ -60,11 +58,9 @@ class client():
         try:
             self.sockt.connect((adresse, port))
             print("Client conn")
-                #    connection=True
         
         except ConnectionRefusedError:
             print('erreur conn')
-                #    connection=False
         
 
     def input_client(self, selfIn):
@@ -81,7 +77,6 @@ class client():
                 print("error recv")
                 
         if inpt[3]=='Vous avez gagné !' or inpt[3]=='Vous avez perdu !':
-            #case=inter.interface.affichage(selfIn, inpt[0], inpt[1],  "{} a perdu !".format(inpt[2]), inpt[3])
             inter.interface.affichage(selfIn, inpt[0], inpt[1], inpt[2], inpt[3], inpt[4])
             self.etat = False
             return True

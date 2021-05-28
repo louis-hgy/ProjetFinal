@@ -1,3 +1,4 @@
+#coding:utf-8
 import client_serveur as serv
 import interface as inter
 import time
@@ -17,7 +18,6 @@ joueur2Tir=([[0 for x in range(10)]for x in range(10)])
 bateaux1={'porte-avion': 5, 'croiseur': 4, 'sous-marin': 3, 'contre-torpilleur': 3, 'torpilleur': 2}
 bateaux2={'porte-avion': 5, 'croiseur': 4, 'sous-marin': 3, 'contre-torpilleur': 3, 'torpilleur': 2}
 
-#bateaux2={'porte-avion': 5}
 
 def initialisation (joueur):
     for cle,valeur in bateaux2.items():
@@ -43,8 +43,7 @@ def initialisation (joueur):
                         for i in range(int(bateau2[1])-1,int(bateau1[1])):
                             joueur[ord(bateau1[0])-65][i]=cle
                 else:
-                    case=False
-                           
+                    case=False            
                     
             elif bateau1[1]==bateau2[1]:
                 if ord(bateau1[0])-65-(ord(bateau2[0])-64)==-valeur:
@@ -64,20 +63,18 @@ def initialisation (joueur):
                         for i in range(ord(bateau2[0])-65, ord(bateau1[0])-64):
                             joueur[i][int(bateau1[1])-1]=cle
                 else:
-                    case=False
-                    
+                    case=False   
             else:
                 case=False
             
             if not case:
                 inter.interface.affichage(selfIn, joueur, joueur1Tir, joueur2Tir, "Réessayez", False)
                 time.sleep(2)
-            
 
     inter.interface.affichage(selfIn, joueur, joueur1Tir, joueur2Tir, "Veuilllez patienter...", False)
-                
+       
+       
 def initialisation_client (self, joueur):
-    
     for cle,valeur in bateaux2.items():
         case=False
         while not case:
@@ -104,8 +101,7 @@ def initialisation_client (self, joueur):
                         for i in range(int(bateau2[1])-1,int(bateau1[1])):
                             joueur[ord(bateau1[0])-65][i]=cle
                 else:
-                    case=False
-                           
+                    case=False              
                     
             elif bateau1[1]==bateau2[1]:
                 if ord(bateau1[0])-65-(ord(bateau2[0])-64)==-valeur:
@@ -125,86 +121,17 @@ def initialisation_client (self, joueur):
                         for i in range(ord(bateau2[0])-65, ord(bateau1[0])-64):
                             joueur[i][int(bateau1[1])-1]=cle
                 else:
-                    case=False
-                    
+                    case=False    
             else:
                 case=False
-            """
-            if bateau1[0]==bateau2[0]:
-                if int(bateau1[1])-1-int(bateau2[1])==-valeur:
-                        for i in range(int(bateau1[1])-1,int(bateau2[1])):
-                            if joueur[ord(bateau1[0])-65][i]!=0:
-                                case=False                        
-                        if case==True:    
-                            for i in range(int(bateau1[1])-1,int(bateau2[1])):
-                                joueur[ord(bateau1[0])-65][i]=cle
-                        
-                elif int(bateau1[1])+1-int(bateau2[1])==valeur:
-                        for i in range(int(bateau2[1])-1,int(bateau1[1])):
-                            if joueur[ord(bateau1[0])-65][i]!=0:
-                                case=False                        
-                        if case==True:    
-                            for i in range(int(bateau2[1])-1,int(bateau1[1])):
-                                joueur[ord(bateau1[0])-65][i]=cle
-            
-                           
-                    
-            elif bateau1[1]==bateau2[1]:
-                if ord(bateau1[0])-65-(ord(bateau2[0])-64)==-valeur:
-                    for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
-                        if joueur[i][int(bateau1[1])-1]!=0:
-                            case=False                        
-                    if case==True:    
-                        for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
-                            joueur[i][int(bateau1[1])-1]=cle
-                        
-                    
-                elif ord(bateau1[0])-63-(ord(bateau2[0])-64)==valeur:
-                    for i in range(ord(bateau2[0])-65, ord(bateau1[0])-64):
-                        if joueur[i][int(bateau1[1])-1]!=0:
-                            case=False                        
-                    if case==True:    
-                        for i in range(ord(bateau2[0])-65, ord(bateau1[0])-64):
-                            joueur[i][int(bateau1[1])-1]=cle
-                else:
-                    case=False
-                    
-            else:
-                case=False
-            """
-            """
-            elif ord(bateau1[0])-63-(ord(bateau2[0])-64)==-valeur:
-                if ord(bateau1[0])-65-(ord(bateau2[0])-64)==-valeur:
-                    for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
-                        if joueur[i][int(bateau1[1])-1]!=0:
-                            case=False                        
-                    if case==True:    
-                        for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
-                            joueur[i][int(bateau1[1])-1]=cle
-                        
-                    
-                elif ord(bateau1[0])-63-(ord(bateau2[0])-64)==valeur:
-                    for i in range(ord(bateau2[0])-65, ord(bateau1[0])-64):
-                        if joueur[i][int(bateau1[1])-1]!=0:
-                            case=False                        
-                    if case==True:    
-                        for i in range(ord(bateau2[0])-65, ord(bateau1[0])-64):
-                            joueur[i][int(bateau1[1])-1]=cle
-            
-                
-                    else:
-                        case=False
-                    
-                else:
-                    case=False
-            """
-            
+           
             if not case:
                 serv.serveur.input_serveur(self, joueur, joueur2Tir, joueur1Tir, "Réessayez", False)
             time.sleep(2)
                    
     serv.serveur.input_serveur(self, joueur, joueur2Tir, joueur1Tir, "Veuilllez patienter...", False)
-                
+            
+            
 def initialisation_ordinateur():
     for cle, valeur in bateaux2.items():
         echec=True
@@ -225,11 +152,10 @@ def initialisation_ordinateur():
                     if ordinateur[ord(bateau1[0]) - 65][i] !=0:
                         print('déjà pris')
                         echec=True
-                        
-                        
+                               
                 if echec==False:    
                     for i in range(int(bateau1[1]) - 1, int(bateau2[1])):
-                         ordinateur[ord(bateau1[0]) - 65][i] = cle
+                        ordinateur[ord(bateau1[0]) - 65][i] = cle
                 
             else:
                 bateau2=list(caseordi[nb1+valeur-1][nb2])
@@ -261,6 +187,7 @@ def bataille(joueur, bateaux, case):
     else:
         return None
 
+
 def perdu():
     if bateaux1['porte-avion']==0 and bateaux1['croiseur']==0 and bateaux1['sous-marin']==0 and bateaux1['contre-torpilleur']==0 and bateaux1['torpilleur']==0:
         return 'Joueur 1'
@@ -271,7 +198,7 @@ def perdu():
         
 
 
-
+#programme principal
   
 selfIn=inter.interface()
 mode=inter.interface.menu(selfIn)
@@ -332,7 +259,6 @@ elif mode==2:
     
     while perdu()==False:
         navale=""
-        print(perdu())
         while navale!=None and perdu()==False:    
             case = inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, "Cliquez sur une case :", True)
             
@@ -372,7 +298,6 @@ elif mode==2:
     serv.serveur.input_serveur(self, joueur2, joueur2Tir, joueur1Tir, perdu2, False)
     inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, perdu1, False)
     time.sleep(5)
-    print(perdu(), 'a perdu !')
     inter.interface.stop()
     serv.serveur.stop(self)
     
@@ -393,13 +318,11 @@ elif mode==3:
     
 elif mode==4:
     initialisation_ordinateur()
-    print(ordinateur)
     initialisation(joueur1)
     
 
     while perdu()==False:
         navale=""
-        print(perdu())
         while navale!=None and perdu()==False:
             case = inter.interface.affichage(selfIn, joueur1, joueur1Tir, ordinateurTir, "Cliquez sur une case :", True)
             navale=bataille(ordinateur, bateaux2, case)
@@ -422,7 +345,6 @@ elif mode==4:
             else:  
                 case=list(caseordi[nb1case][nb2case])
                 print(case)
-                print(ordinateurTir)
                 navale=bataille(joueur1, bateaux1, case)
                 tir(ordinateurTir, case, navale)      
     
@@ -431,7 +353,6 @@ elif mode==4:
     else:
         perdu1="Vous avez gagné !"
 
-    print(perdu(), "a perdu !")
     inter.interface.affichage(selfIn, [[0]], [[0]], [[0]], perdu1, False)
     time.sleep(5)
     
