@@ -4,7 +4,7 @@
 Pour pouvoir utiliser notre programme, il faut avoir télécharger les fichiers nécessaires soit les trois fichiers Python 
 (Projet_NSI, interface et client_serveur) ainsi que les dossiers images et sons. Il faut également avoir installer les bilbiothèques Pygame, Socket, Time, et Random. Tous ces fichiers assurent le bon 
 fonctionnement du programme. Après avoir téléchargé les fichiers, ouvrir le fichier Projet_NSI.py puis il faut exécuter ce 
-fichier (bouton Play en vert).       
+fichier (bouton Play en vert). Vous pouvez également éxécuter le fichier bataille_navale.exe pour lancer le programme. 
 
 Une nouvelle page va alors s’ouvrir avec un menu principal à choix multiples. Soit vous 
 pouvez jouer à deux sur un même ordinateur. Soit vous pouvez jouer tout seul face à l’ordinateur. Aussi , vous pouvez à deux 
