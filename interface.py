@@ -24,6 +24,7 @@ class interface():
         self.white = (255, 255, 255)
         self.blue = (0, 0, 255)
         self.red = (255, 0, 0)
+        self.grey = (178,190,181)
 
         self.font = pygame.font.SysFont("arial", 25)
         self.fontTitre = pygame.font.SysFont("arialbd", 50)
@@ -53,8 +54,8 @@ class interface():
         mode4 = pygame.Rect(708, 100, 458, 150)
 
         pygame.draw.rect(self.window_surface, self.black, mode1, 5)
-        pygame.draw.rect(self.window_surface, self.black, mode2, 8)
-        pygame.draw.rect(self.window_surface, self.black, mode3, 8)
+        pygame.draw.rect(self.window_surface, self.black, mode2, 5)
+        pygame.draw.rect(self.window_surface, self.black, mode3, 5)
         pygame.draw.rect(self.window_surface, self.black, mode4, 5)
 
         textMode1 = self.fontTitre.render("1. Mode 1 ordinateur", True, self.black)
@@ -219,7 +220,7 @@ class interface():
         for i in range(len(joueur)):
             for j in range(len(joueur)):
                 if joueur[i][j]!=0:
-                    pygame.draw.rect(self.window_surface, self.blue, pygame.Rect(y[j], x[i], 50, 50))
+                    pygame.draw.rect(self.window_surface, self.grey, pygame.Rect(y[j], x[i], 50, 50))
                 if joueurTir[i][j]==1:
                     pygame.draw.rect(self.window_surface, self.blue, pygame.Rect(y[j]+550, x[i], 50, 50))
                 elif joueurTir[i][j]==2:

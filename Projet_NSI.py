@@ -79,17 +79,130 @@ def initialisation (joueur):
 def initialisation_client (self, joueur):
     
     for cle,valeur in bateaux2.items():
-        bateau1, bateau2 = [], []
-        while bateau1==[]:
-            bateau1 = serv.serveur.input_serveur(self, joueur, joueur1Tir, joueur2Tir, "Entrez la première extrémité du {} ({} cases)".format(cle, valeur), True)
-        while bateau2==[]:
-            bateau2 = serv.serveur.input_serveur(self, joueur, joueur1Tir, joueur2Tir, "Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur), True)
-        if bateau1[0]==bateau2[0]:
-            for i in range(int(bateau1[1])-1,int(bateau2[1])):
-                joueur[ord(bateau1[0])-65][i]=cle
-        else:
-            for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
-                joueur[i][int(bateau1[1])-1]=cle
+        case=False
+        while not case:
+            case=True
+            bateau1, bateau2 = [], []
+            while bateau1==[]:
+                bateau1 = serv.serveur.input_serveur(self, joueur, joueur1Tir, joueur2Tir, "Entrez la première extrémité du {} ({} cases)".format(cle, valeur), True)
+            while bateau2==[]:
+                bateau2 = serv.serveur.input_serveur(self, joueur, joueur1Tir, joueur2Tir, "Entrez la dernière extrémité du {} ({} cases)".format(cle, valeur), True)
+            if bateau1[0]==bateau2[0]:
+                if int(bateau1[1])-1-int(bateau2[1])==-valeur:
+                    for i in range(int(bateau1[1])-1,int(bateau2[1])):
+                        if joueur[ord(bateau1[0])-65][i]!=0:
+                            case=False                        
+                    if case==True:    
+                        for i in range(int(bateau1[1])-1,int(bateau2[1])):
+                            joueur[ord(bateau1[0])-65][i]=cle
+                        
+                elif int(bateau1[1])+1-int(bateau2[1])==valeur:
+                    for i in range(int(bateau2[1])-1,int(bateau1[1])):
+                        if joueur[ord(bateau1[0])-65][i]!=0:
+                            case=False                        
+                    if case==True:    
+                        for i in range(int(bateau2[1])-1,int(bateau1[1])):
+                            joueur[ord(bateau1[0])-65][i]=cle
+                else:
+                    case=False
+                           
+                    
+            elif bateau1[1]==bateau2[1]:
+                if ord(bateau1[0])-65-(ord(bateau2[0])-64)==-valeur:
+                    for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
+                        if joueur[i][int(bateau1[1])-1]!=0:
+                            case=False                        
+                    if case==True:    
+                        for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
+                            joueur[i][int(bateau1[1])-1]=cle
+                        
+                    
+                elif ord(bateau1[0])-63-(ord(bateau2[0])-64)==valeur:
+                    for i in range(ord(bateau2[0])-65, ord(bateau1[0])-64):
+                        if joueur[i][int(bateau1[1])-1]!=0:
+                            case=False                        
+                    if case==True:    
+                        for i in range(ord(bateau2[0])-65, ord(bateau1[0])-64):
+                            joueur[i][int(bateau1[1])-1]=cle
+                else:
+                    case=False
+                    
+            else:
+                case=False
+            """
+            if bateau1[0]==bateau2[0]:
+                if int(bateau1[1])-1-int(bateau2[1])==-valeur:
+                        for i in range(int(bateau1[1])-1,int(bateau2[1])):
+                            if joueur[ord(bateau1[0])-65][i]!=0:
+                                case=False                        
+                        if case==True:    
+                            for i in range(int(bateau1[1])-1,int(bateau2[1])):
+                                joueur[ord(bateau1[0])-65][i]=cle
+                        
+                elif int(bateau1[1])+1-int(bateau2[1])==valeur:
+                        for i in range(int(bateau2[1])-1,int(bateau1[1])):
+                            if joueur[ord(bateau1[0])-65][i]!=0:
+                                case=False                        
+                        if case==True:    
+                            for i in range(int(bateau2[1])-1,int(bateau1[1])):
+                                joueur[ord(bateau1[0])-65][i]=cle
+            
+                           
+                    
+            elif bateau1[1]==bateau2[1]:
+                if ord(bateau1[0])-65-(ord(bateau2[0])-64)==-valeur:
+                    for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
+                        if joueur[i][int(bateau1[1])-1]!=0:
+                            case=False                        
+                    if case==True:    
+                        for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
+                            joueur[i][int(bateau1[1])-1]=cle
+                        
+                    
+                elif ord(bateau1[0])-63-(ord(bateau2[0])-64)==valeur:
+                    for i in range(ord(bateau2[0])-65, ord(bateau1[0])-64):
+                        if joueur[i][int(bateau1[1])-1]!=0:
+                            case=False                        
+                    if case==True:    
+                        for i in range(ord(bateau2[0])-65, ord(bateau1[0])-64):
+                            joueur[i][int(bateau1[1])-1]=cle
+                else:
+                    case=False
+                    
+            else:
+                case=False
+            """
+            """
+            elif ord(bateau1[0])-63-(ord(bateau2[0])-64)==-valeur:
+                if ord(bateau1[0])-65-(ord(bateau2[0])-64)==-valeur:
+                    for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
+                        if joueur[i][int(bateau1[1])-1]!=0:
+                            case=False                        
+                    if case==True:    
+                        for i in range(ord(bateau1[0])-65, ord(bateau2[0])-64):
+                            joueur[i][int(bateau1[1])-1]=cle
+                        
+                    
+                elif ord(bateau1[0])-63-(ord(bateau2[0])-64)==valeur:
+                    for i in range(ord(bateau2[0])-65, ord(bateau1[0])-64):
+                        if joueur[i][int(bateau1[1])-1]!=0:
+                            case=False                        
+                    if case==True:    
+                        for i in range(ord(bateau2[0])-65, ord(bateau1[0])-64):
+                            joueur[i][int(bateau1[1])-1]=cle
+            
+                
+                    else:
+                        case=False
+                    
+                else:
+                    case=False
+            """
+            
+            if not case:
+                serv.serveur.input_serveur(self, joueur, joueur2Tir, joueur1Tir, "Réessayez", False)
+            time.sleep(2)
+                   
     serv.serveur.input_serveur(self, joueur, joueur2Tir, joueur1Tir, "Veuilllez patienter...", False)
                 
 def initialisation_ordinateur():
@@ -167,12 +280,12 @@ if mode==1:
 
     initialisation(joueur1)
     time.sleep(3)
-    inter.interface.affichage(selfIn, [[0]], [[0]], [[0]], "Passez l'odinateur au Joueur 2", False)
+    inter.interface.affichage(selfIn, [[0]], [[0]], [[0]], "Passez l'ordinateur au Joueur 2", False)
     time.sleep(5)
     initialisation(joueur2)
     time.sleep(3)
     
-    inter.interface.affichage(selfIn, [[0]], [[0]], [[0]], "Passez l'odinateur au Joueur 1", False)
+    inter.interface.affichage(selfIn, [[0]], [[0]], [[0]], "Passez l'ordinateur au Joueur 1", False)
     time.sleep(5)
     
     while perdu()==False:
@@ -189,7 +302,7 @@ if mode==1:
             time.sleep(3)
         
         navale=""
-        inter.interface.affichage(selfIn, [[0]], [[0]], [[0]], "Passez l'odinateur au Joueur 2", False)
+        inter.interface.affichage(selfIn, [[0]], [[0]], [[0]], "Passez l'ordinateur au Joueur 2", False)
         time.sleep(5)
         while navale!=None and perdu()==False:
             case = inter.interface.affichage(selfIn, joueur2, joueur2Tir, joueur1Tir, "Joueur 2, cliquez sur une case", True)
@@ -199,7 +312,7 @@ if mode==1:
             inter.interface.affichage(selfIn, joueur2, joueur2Tir, joueur1Tir, navale, False)
             time.sleep(3)
             
-        inter.interface.affichage(selfIn, [[0]], [[0]], [[0]], "Passez l'odinateur au Joueur 1", False)
+        inter.interface.affichage(selfIn, [[0]], [[0]], [[0]], "Passez l'ordinateur au Joueur 1", False)
         time.sleep(5)
             
     print(perdu(), "a perdu !")
@@ -266,7 +379,7 @@ elif mode==2:
 elif mode==3:
     
     adresse=inter.interface.ipAdresse(selfIn)
-    inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, "Veillez patienter...", False)
+    inter.interface.affichage(selfIn, joueur1, joueur1Tir, joueur2Tir, "Veuillez patienter...", False)
     self=serv.client(adresse)
     
     perdu=False
