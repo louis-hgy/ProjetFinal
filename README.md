@@ -1,6 +1,6 @@
-README – Projet « Bataille Navale » - STCHEPINSKY Charles & HUGUENY Louis
+﻿README – Projet « Bataille Navale » - STCHEPINSKY Charles & HUGUENY Louis
 
-	Pour pouvoir utiliser notre programme, il faut avoir télécharger les fichiers nécessaires soit les trois fichiers Python 
+     Pour pouvoir utiliser notre programme, il faut avoir télécharger les fichiers nécessaires soit les trois fichiers Python 
 (Projet_NSI, interface et client_serveur) ainsi que les dossiers images et bruitage. Tous ces fichiers assurent le bon 
 fonctionnement du programme. Après avoir téléchargé les fichiers, ouvrir le fichier Projet_NSI puis il faut exécuter ce 
 fichier (bouton Play en vert). 		
