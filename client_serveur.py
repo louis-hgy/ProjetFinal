@@ -79,7 +79,7 @@ class client():
         if inpt[3]=='Vous avez gagné !' or inpt[3]=='Vous avez perdu !':
             inter.interface.affichage(selfIn, inpt[0], inpt[1], inpt[2], inpt[3], inpt[4])
             self.etat = False
-            return True
+            return 'Vous avez perdu !'
         
         else:
             inter.interface.son(selfIn, inpt[3])
